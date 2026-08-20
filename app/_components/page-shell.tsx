@@ -1,0 +1,30 @@
+import type { ReactNode } from "react";
+import { SiteFooter } from "./footer";
+import { MeshBackground } from "./mesh-background";
+import { MotionRoot } from "./motion";
+import { SiteHeader } from "./site-header";
+
+export function PageShell({
+  children,
+  bookingUrl = "/book",
+  ctaLabel,
+}: {
+  children: ReactNode;
+  bookingUrl?: string;
+  ctaLabel?: string;
+}) {
+  return (
+    <MotionRoot>
+      <div className="relative flex min-h-full flex-1 flex-col font-sans text-[var(--fg)] antialiased">
+        <MeshBackground />
+        <SiteHeader
+          bookingUrl={bookingUrl}
+          showSections={false}
+          ctaLabel={ctaLabel}
+        />
+        <main className="flex-1">{children}</main>
+        <SiteFooter bookingUrl="/book" />
+      </div>
+    </MotionRoot>
+  );
+}

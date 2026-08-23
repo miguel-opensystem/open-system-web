@@ -88,7 +88,7 @@ export function HelpProvider({ children }: { children: ReactNode }) {
       <AnimatePresence>
         {visible && (
           <motion.div
-            className="fixed inset-0 z-[80] flex items-end justify-center p-3 sm:items-center sm:p-6"
+            className="fixed inset-0 z-[80] flex items-center justify-center p-4 sm:p-6"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -133,13 +133,13 @@ export function HelpProvider({ children }: { children: ReactNode }) {
                 </button>
               </div>
 
-              <ul className="mt-6 divide-y divide-black/[0.06]">
+              <ul className="mt-8 divide-y divide-black/[0.06]">
                 {copy.help.paths.map((path) => (
                   <li key={path.href}>
                     <Link
                       href={path.href}
                       onClick={close}
-                      className="group flex items-center justify-between gap-4 py-3 transition-colors duration-300 first:pt-0 last:pb-0"
+                      className="group flex items-center justify-between gap-4 py-5 transition-colors duration-300"
                     >
                       <span className="text-[16px] font-semibold tracking-[-0.015em]">
                         {path.title}

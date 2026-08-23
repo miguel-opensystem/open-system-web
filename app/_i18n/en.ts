@@ -38,22 +38,18 @@ export const en = {
     paths: [
       {
         title: "Install the infrastructure",
-        body: "A strategy call. We review where revenue is being lost and decide if we take the engagement.",
         href: "/book",
       },
       {
         title: "See what the audience is worth",
-        body: "The monthly revenue that is not being captured today.",
         href: "/#calculator",
       },
       {
         title: "Work with us as an operator",
-        body: "We work with independent operators. Submit proof of work.",
         href: "/network",
       },
       {
         title: "A question first",
-        body: "Engagements, services, how we work — answered plainly.",
         href: "/faq",
       },
     ],

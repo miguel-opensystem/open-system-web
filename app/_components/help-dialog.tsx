@@ -133,21 +133,16 @@ export function HelpProvider({ children }: { children: ReactNode }) {
                 </button>
               </div>
 
-              <ul className="mt-8 divide-y divide-black/[0.06]">
+              <ul className="mt-6 divide-y divide-black/[0.06]">
                 {copy.help.paths.map((path) => (
                   <li key={path.href}>
                     <Link
                       href={path.href}
                       onClick={close}
-                      className="group flex items-center justify-between gap-6 py-4 transition-colors duration-300 first:pt-0 last:pb-0"
+                      className="group flex items-center justify-between gap-4 py-3 transition-colors duration-300 first:pt-0 last:pb-0"
                     >
-                      <span>
-                        <span className="block text-[16px] font-medium tracking-[-0.015em]">
-                          {path.title}
-                        </span>
-                        <span className="mt-1 block text-[13px] leading-5 text-[#86868B]">
-                          {path.body}
-                        </span>
+                      <span className="text-[16px] font-semibold tracking-[-0.015em]">
+                        {path.title}
                       </span>
                       <ArrowIcon className="size-4 shrink-0 text-[#86868B] transition-transform duration-500 ease-out group-hover:translate-x-1 group-hover:text-[#050505]" />
                     </Link>

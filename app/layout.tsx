@@ -27,9 +27,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} h-full max-w-[100vw] overflow-x-hidden scroll-smooth antialiased`}
+      className={`${geistSans.variable} h-full max-w-[100vw] overflow-x-clip scroll-smooth antialiased`}
     >
-      <body className="flex min-h-full max-w-[100vw] flex-col overflow-x-hidden">
+      <body className="flex min-h-full max-w-[100vw] flex-col overflow-x-clip">
         <LocaleProvider>
           <HelpProvider>{children}</HelpProvider>
         </LocaleProvider>

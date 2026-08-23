@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useCopy } from "../_i18n/provider";
 import { Wordmark } from "./chrome";
 import { HelpTrigger } from "./help-dialog";
@@ -30,6 +30,8 @@ export function SiteHeader({
 }) {
   const copy = useCopy();
   const resolvedCta = ctaLabel ?? copy.nav.bookCta;
+  const headerRef = useRef<HTMLElement>(null);
+  const [headerHeight, setHeaderHeight] = useState(112);
   const [active, setActive] = useState("");
   const sections = sectionIds.map((id) => ({
     id,
@@ -42,6 +44,18 @@ export function SiteHeader({
             ? copy.nav.proof
             : copy.nav.partnership,
   }));
+
+  useEffect(() => {
+    const node = headerRef.current;
+    if (!node) return;
+
+    const syncHeight = () => setHeaderHeight(node.offsetHeight);
+    syncHeight();
+
+    const observer = new ResizeObserver(syncHeight);
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, []);
 
   useEffect(() => {
     if (!showSections) return;
@@ -100,7 +114,11 @@ export function SiteHeader({
   });
 
   return (
-    <header className="gpu sticky top-0 z-50 w-full max-w-[100vw] overflow-x-hidden bg-[var(--background)]/80 pt-[env(safe-area-inset-top)] backdrop-blur-xl">
+    <>
+    <header
+      ref={headerRef}
+      className="fixed top-0 right-0 left-0 z-50 w-full max-w-[100vw] overflow-x-clip bg-[var(--background)]/80 pt-[env(safe-area-inset-top)] backdrop-blur-xl"
+    >
       <div className="relative mx-auto flex h-16 max-w-6xl items-center justify-between gap-3 px-4 sm:h-[4.25rem] sm:px-6">
         <Link href={homeHref} className="relative z-10 min-w-0 shrink-0">
           <Wordmark />
@@ -155,5 +173,7 @@ export function SiteHeader({
         </nav>
       </div>
     </header>
+    <div aria-hidden="true" style={{ height: headerHeight }} />
+    </>
   );
 }

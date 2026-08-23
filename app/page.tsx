@@ -57,7 +57,7 @@ export default function Home() {
         <MeshBackground />
         <SiteHeader bookingUrl={BOOKING_URL} homeHref="#top" />
 
-        <main className="max-w-[100vw] flex-1 overflow-x-hidden">
+        <main className="max-w-[100vw] flex-1 overflow-x-clip">
           <section className="flex min-h-[calc(100dvh-8.5rem)] w-full max-w-full flex-col overflow-hidden lg:min-h-[calc(100dvh-4.25rem)]">
             <div className="mx-auto flex w-full max-w-6xl flex-1 flex-col justify-center px-4 pt-10 pb-8 text-center sm:px-6 sm:pt-16 sm:pb-10">
               <Reveal>

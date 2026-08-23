@@ -22,7 +22,7 @@ export function PageShell({
           showSections={false}
           ctaLabel={ctaLabel}
         />
-        <main className="max-w-[100vw] flex-1 overflow-x-hidden">{children}</main>
+        <main className="max-w-[100vw] flex-1 overflow-x-clip">{children}</main>
         <SiteFooter bookingUrl="/book" />
       </div>
     </MotionRoot>

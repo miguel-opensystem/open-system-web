@@ -166,13 +166,13 @@ export default function Home() {
 
           <section id="proof" className="relative scroll-mt-40 lg:scroll-mt-24">
             <div
-              className="pointer-events-none absolute -inset-y-96 inset-x-0"
+              className="gpu pointer-events-none absolute -inset-y-96 inset-x-0"
               aria-hidden="true"
             >
               <div className="absolute inset-0 bg-[linear-gradient(to_bottom,rgba(5,5,5,0)_0%,rgba(5,5,5,0.06)_10%,rgba(5,5,5,0.22)_20%,rgba(5,5,5,0.55)_28%,rgba(5,5,5,0.9)_34%,#050505_40%,#050505_60%,rgba(5,5,5,0.9)_66%,rgba(5,5,5,0.55)_72%,rgba(5,5,5,0.22)_80%,rgba(5,5,5,0.06)_90%,rgba(5,5,5,0)_100%)]" />
-              <div className="absolute top-[18%] left-[4%] h-[44rem] w-[44rem] rounded-full bg-[radial-gradient(circle,rgba(10,132,255,0.38),rgba(10,132,255,0)_66%)] blur-3xl" />
-              <div className="absolute top-[38%] right-[-14%] h-[46rem] w-[46rem] rounded-full bg-[radial-gradient(circle,rgba(94,92,230,0.34),rgba(94,92,230,0)_66%)] blur-3xl" />
-              <div className="absolute bottom-[16%] left-[22%] h-[40rem] w-[40rem] rounded-full bg-[radial-gradient(circle,rgba(90,200,250,0.22),rgba(90,200,250,0)_66%)] blur-3xl" />
+              <div className="gpu absolute top-[18%] left-[4%] h-[44rem] w-[44rem] rounded-full bg-[radial-gradient(circle,rgba(10,132,255,0.38),rgba(10,132,255,0)_66%)] blur-3xl" />
+              <div className="gpu absolute top-[38%] right-[-14%] h-[46rem] w-[46rem] rounded-full bg-[radial-gradient(circle,rgba(94,92,230,0.34),rgba(94,92,230,0)_66%)] blur-3xl" />
+              <div className="gpu absolute bottom-[16%] left-[22%] h-[40rem] w-[40rem] rounded-full bg-[radial-gradient(circle,rgba(90,200,250,0.22),rgba(90,200,250,0)_66%)] blur-3xl" />
             </div>
 
             <div className="relative mx-auto max-w-6xl px-4 pt-64 pb-72 sm:px-6 sm:pt-72 sm:pb-80">
@@ -195,7 +195,7 @@ export default function Home() {
               <Stagger className="mt-6 grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4" step={0.08}>
                 {copy.home.trustStats.map((stat) => (
                   <StaggerItem key={stat.label}>
-                    <div className="h-full rounded-2xl border border-white/10 bg-white/[0.05] p-4 backdrop-blur-2xl transition-all duration-500 ease-out sm:p-6 [@media(hover:hover)]:hover:scale-[1.02] [@media(hover:hover)]:hover:border-white/20">
+                    <div className="gpu h-full rounded-2xl border border-white/10 bg-white/[0.05] p-4 backdrop-blur-2xl transition-all duration-500 ease-out sm:p-6 [@media(hover:hover)]:hover:scale-[1.02] [@media(hover:hover)]:hover:border-white/20">
                       <p className="text-3xl font-semibold tracking-[-0.035em] text-white tabular-nums">
                         {stat.figure}
                       </p>
@@ -208,7 +208,7 @@ export default function Home() {
               </Stagger>
 
               <Reveal delay={0.1} className="mt-6">
-                <div className="overflow-hidden rounded-3xl border border-white/10 bg-white/[0.04] backdrop-blur-2xl">
+                <div className="gpu overflow-hidden rounded-3xl border border-white/10 bg-white/[0.04] backdrop-blur-2xl">
                   <div className="flex flex-col gap-1 border-b border-white/[0.08] px-5 py-5 sm:flex-row sm:items-end sm:justify-between sm:px-8 sm:py-6">
                     <div>
                       <p className="text-[11px] tracking-[0.14em] text-white/40 uppercase">
@@ -256,7 +256,7 @@ export default function Home() {
                   </p>
                   <Link
                     href={BOOKING_URL}
-                    className="group inline-flex h-12 items-center gap-2 rounded-full border border-white/15 bg-white/[0.06] px-7 text-[15px] font-medium text-white backdrop-blur-xl transition-all duration-500 ease-out hover:scale-[1.03] hover:border-white/30 hover:bg-white/10"
+                    className="gpu group inline-flex h-12 items-center gap-2 rounded-full border border-white/15 bg-white/[0.06] px-7 text-[15px] font-medium text-white backdrop-blur-xl transition-all duration-500 ease-out hover:scale-[1.03] hover:border-white/30 hover:bg-white/10"
                   >
                     {copy.home.proofCta}
                     <ArrowIcon className="size-4 transition-transform duration-500 ease-out group-hover:translate-x-1" />

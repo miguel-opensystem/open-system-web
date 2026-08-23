@@ -57,10 +57,10 @@ export function Silk({
 
   return (
     <div
-      className={`relative overflow-hidden rounded-3xl ${palette.base} ${className}`}
+      className={`gpu relative overflow-hidden rounded-3xl ${palette.base} ${className}`}
     >
       <motion.div
-        className={`absolute -inset-[45%] ${palette.conic} blur-3xl`}
+        className={`gpu absolute -inset-[45%] ${palette.conic} blur-3xl`}
         animate={reduced || paused ? undefined : { rotate: 360 }}
         transition={{ duration: 70, repeat: Infinity, ease: "linear" }}
         aria-hidden="true"
@@ -140,7 +140,7 @@ export function FloatingStat({
 
   return (
     <motion.div
-      className={`rounded-2xl border border-white/30 bg-white/15 p-5 shadow-[0_18px_50px_-20px_rgba(2,18,45,0.6)] backdrop-blur-xl ${className}`}
+      className={`gpu rounded-2xl border border-white/30 bg-white/15 p-5 shadow-[0_18px_50px_-20px_rgba(2,18,45,0.6)] backdrop-blur-xl ${className}`}
       animate={reduced || paused ? undefined : { y: [0, -8, 0] }}
       transition={{ duration: 9, repeat: Infinity, ease: "easeInOut" }}
     >
@@ -163,7 +163,7 @@ export function Marquee({ items }: { items: string[] }) {
   return (
     <div className="relative overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">
       <motion.div
-        className="flex w-max gap-3 pr-3"
+        className="gpu flex w-max gap-3 pr-3"
         animate={reduced ? undefined : { x: ["0%", "-50%"] }}
         transition={{ duration: 42, repeat: Infinity, ease: "linear" }}
       >

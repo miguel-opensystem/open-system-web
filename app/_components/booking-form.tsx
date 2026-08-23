@@ -130,7 +130,7 @@ export function BookingForm() {
   }
 
   const cardClass = isCalendarView
-    ? "relative flex h-full flex-col overflow-hidden rounded-3xl border border-white/60 bg-white/60 p-8 shadow-[0_8px_30px_rgba(0,0,0,0.04)] backdrop-blur-2xl sm:p-10"
+    ? "gpu relative flex h-full flex-col overflow-hidden rounded-3xl border border-white/60 bg-white/60 p-8 shadow-[0_8px_30px_rgba(0,0,0,0.04)] backdrop-blur-2xl sm:p-10"
     : `${glassCard} p-8 sm:p-10`;
 
   return (

@@ -216,9 +216,9 @@ export function RingGauge({
   const circumference = 2 * Math.PI * radius;
 
   return (
-    <div className="relative" style={{ width: size, height: size }}>
+    <div className="gpu relative" style={{ width: size, height: size }}>
       <div
-        className="absolute inset-3 rounded-full blur-2xl"
+        className="gpu absolute inset-3 rounded-full blur-2xl"
         style={{ background: `${from}33` }}
         aria-hidden="true"
       />

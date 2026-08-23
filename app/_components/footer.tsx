@@ -62,7 +62,7 @@ export function SiteFooter({ bookingUrl }: { bookingUrl: string }) {
   ];
 
   return (
-    <footer className="relative mt-8 border-t border-[color:var(--card-border)] bg-[var(--surface)] pb-[env(safe-area-inset-bottom)] backdrop-blur-2xl">
+    <footer className="gpu relative mt-8 border-t border-[color:var(--card-border)] bg-[var(--surface)] pb-[env(safe-area-inset-bottom)] backdrop-blur-2xl">
       <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-20">
         <div className="grid gap-12 lg:grid-cols-[1.1fr_2fr]">
           <div>

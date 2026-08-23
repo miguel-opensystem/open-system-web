@@ -364,7 +364,7 @@ export function Calculator() {
         : copy.calc.ready;
 
   return (
-    <div className="overflow-hidden rounded-[1.5rem] border border-[color:var(--card-border)] bg-[var(--card)] shadow-[0_30px_90px_-45px_rgba(0,0,0,0.4)] backdrop-blur-2xl sm:rounded-[2rem]">
+    <div className="gpu overflow-hidden rounded-[1.5rem] border border-[color:var(--card-border)] bg-[var(--card)] shadow-[0_30px_90px_-45px_rgba(0,0,0,0.4)] backdrop-blur-2xl sm:rounded-[2rem]">
       <div className="flex items-center justify-between border-b border-[color:var(--card-border)] px-4 py-3 sm:px-7">
         <p className="text-[13px] font-medium tracking-[-0.01em]">
           {copy.calc.title}
@@ -524,7 +524,7 @@ export function Calculator() {
 
         <div className="relative min-h-[280px] overflow-hidden rounded-3xl border border-white/10 bg-[#050505] p-4 text-white sm:min-h-[300px] sm:p-6 lg:min-h-0">
           <div
-            className="pointer-events-none absolute -top-24 -right-16 h-64 w-64 rounded-full bg-[radial-gradient(circle,rgba(10,132,255,0.45),transparent_65%)] blur-2xl"
+            className="gpu pointer-events-none absolute -top-24 -right-16 h-64 w-64 rounded-full bg-[radial-gradient(circle,rgba(10,132,255,0.45),transparent_65%)] blur-2xl"
             aria-hidden="true"
           />
 

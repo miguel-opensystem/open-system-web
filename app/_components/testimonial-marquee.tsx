@@ -11,7 +11,7 @@ export type Testimonial = {
 
 function Card({ item }: { item: Testimonial }) {
   return (
-    <figure className="flex w-[300px] shrink-0 flex-col rounded-3xl border border-[color:var(--card-border)] bg-[var(--card)] p-5 shadow-[0_8px_30px_rgba(0,0,0,0.04)] backdrop-blur-2xl sm:w-[340px] sm:p-6">
+    <figure className="gpu flex w-[300px] shrink-0 flex-col rounded-3xl border border-[color:var(--card-border)] bg-[var(--card)] p-5 shadow-[0_8px_30px_rgba(0,0,0,0.04)] backdrop-blur-2xl sm:w-[340px] sm:p-6">
       <blockquote className="text-[14px] leading-6 tracking-[0.01em] text-[var(--fg)] sm:text-[15px] sm:leading-7">
         “{item.quote}”
       </blockquote>
@@ -57,7 +57,7 @@ export function TestimonialMarquee({ items }: { items: Testimonial[] }) {
   return (
     <div className="relative overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_6%,black_94%,transparent)]">
       <motion.div
-        className="flex w-max"
+        className="gpu flex w-max"
         animate={{ x: ["-50%", "0%"] }}
         transition={{ duration: 48, repeat: Infinity, ease: "linear" }}
       >

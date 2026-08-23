@@ -34,13 +34,13 @@ export function MeshBackground() {
 
   return (
     <div
-      className="grain pointer-events-none fixed inset-0 -z-10 overflow-hidden bg-[var(--background)]"
+      className="grain gpu pointer-events-none fixed inset-0 -z-10 overflow-hidden bg-[var(--background)]"
       aria-hidden="true"
     >
       {blobs.map((blob, i) => (
         <motion.div
           key={i}
-          className={`absolute rounded-full blur-3xl ${blob.className}`}
+          className={`gpu absolute rounded-full blur-3xl ${blob.className}`}
           animate={reduced ? undefined : blob.drift}
           transition={{
             duration: blob.duration,

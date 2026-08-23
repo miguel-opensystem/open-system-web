@@ -100,7 +100,7 @@ export function SiteHeader({
   });
 
   return (
-    <header className="sticky top-0 z-50 bg-[var(--background)]/80 pt-[env(safe-area-inset-top)] backdrop-blur-xl">
+    <header className="gpu sticky top-0 z-50 bg-[var(--background)]/80 pt-[env(safe-area-inset-top)] backdrop-blur-xl">
       <div className="relative mx-auto flex h-16 max-w-6xl items-center justify-between gap-3 px-4 sm:h-[4.25rem] sm:px-6">
         <Link href={homeHref} className="relative z-10 min-w-0 shrink-0">
           <Wordmark />
@@ -110,7 +110,7 @@ export function SiteHeader({
           className="absolute top-1/2 left-1/2 hidden -translate-x-1/2 -translate-y-1/2 lg:block"
           aria-label="Page sections"
         >
-          <div className="flex items-center gap-0.5 rounded-full border border-[color:var(--card-border)] bg-[var(--card)] px-1.5 py-1 shadow-[0_8px_30px_rgba(0,0,0,0.06)] backdrop-blur-2xl">
+          <div className="gpu flex items-center gap-0.5 rounded-full border border-[color:var(--card-border)] bg-[var(--card)] px-1.5 py-1 shadow-[0_8px_30px_rgba(0,0,0,0.06)] backdrop-blur-2xl">
             {links}
           </div>
         </nav>
@@ -142,7 +142,7 @@ export function SiteHeader({
 
       <div className="px-4 pb-3 sm:px-6 lg:hidden">
         <nav
-          className="flex items-center gap-0.5 overflow-x-auto rounded-full border border-[color:var(--card-border)] bg-[var(--card)] px-1.5 py-1 shadow-[0_8px_30px_rgba(0,0,0,0.06)] backdrop-blur-2xl [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+          className="gpu flex items-center gap-0.5 overflow-x-auto rounded-full border border-[color:var(--card-border)] bg-[var(--card)] px-1.5 py-1 shadow-[0_8px_30px_rgba(0,0,0,0.06)] backdrop-blur-2xl [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
           aria-label="Page sections"
         >
           {links}

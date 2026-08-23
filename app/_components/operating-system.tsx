@@ -15,7 +15,7 @@ const activityMeta = [
 ];
 
 const panel =
-  "rounded-2xl border border-white/10 bg-white/[0.04] p-4 backdrop-blur-2xl sm:p-6";
+  "gpu rounded-2xl border border-white/10 bg-white/[0.04] p-4 backdrop-blur-2xl sm:p-6";
 const label = "text-[11px] font-medium tracking-[0.14em] text-white/40 uppercase";
 
 export function OperatingSystem() {
@@ -26,7 +26,7 @@ export function OperatingSystem() {
   }));
 
   return (
-    <div className="overflow-hidden rounded-[2rem] border border-white/10 bg-[#050505]/70 shadow-[0_50px_140px_-40px_rgba(0,0,0,0.8)] backdrop-blur-2xl">
+    <div className="gpu overflow-hidden rounded-[2rem] border border-white/10 bg-[#050505]/70 shadow-[0_50px_140px_-40px_rgba(0,0,0,0.8)] backdrop-blur-2xl">
       <div
         className="h-px w-full bg-gradient-to-r from-transparent via-white/25 to-transparent"
         aria-hidden="true"

@@ -97,7 +97,7 @@ export function HelpProvider({ children }: { children: ReactNode }) {
             <button
               type="button"
               aria-label={copy.help.close}
-              className="absolute inset-0 bg-[#050505]/45 backdrop-blur-md"
+              className="gpu absolute inset-0 bg-[#050505]/45 backdrop-blur-md"
               onClick={close}
             />
             <motion.div

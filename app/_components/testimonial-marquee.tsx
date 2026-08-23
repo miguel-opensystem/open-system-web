@@ -55,7 +55,7 @@ export function TestimonialMarquee({ items }: { items: Testimonial[] }) {
   }
 
   return (
-    <div className="relative overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_6%,black_94%,transparent)]">
+    <div className="relative w-full max-w-full overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_6%,black_94%,transparent)]">
       <motion.div
         className="gpu flex w-max"
         animate={{ x: ["-50%", "0%"] }}

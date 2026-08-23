@@ -52,13 +52,13 @@ export default function Home() {
     <MotionRoot>
       <div
         id="top"
-        className="relative flex flex-1 flex-col font-sans text-[var(--fg)] antialiased"
+        className="relative flex max-w-[100vw] flex-1 flex-col font-sans text-[var(--fg)] antialiased"
       >
         <MeshBackground />
         <SiteHeader bookingUrl={BOOKING_URL} homeHref="#top" />
 
-        <main className="flex-1">
-          <section className="flex min-h-[calc(100dvh-8.5rem)] flex-col lg:min-h-[calc(100dvh-4.25rem)]">
+        <main className="max-w-[100vw] flex-1 overflow-x-hidden">
+          <section className="flex min-h-[calc(100dvh-8.5rem)] w-full max-w-full flex-col overflow-hidden lg:min-h-[calc(100dvh-4.25rem)]">
             <div className="mx-auto flex w-full max-w-6xl flex-1 flex-col justify-center px-4 pt-10 pb-8 text-center sm:px-6 sm:pt-16 sm:pb-10">
               <Reveal>
                 <SectionLabel>{copy.home.label}</SectionLabel>
@@ -125,7 +125,7 @@ export default function Home() {
 
           <section
             id="pillars"
-            className="scroll-mt-40 py-20 sm:py-32 lg:scroll-mt-24"
+            className="w-full max-w-full overflow-x-hidden scroll-mt-40 py-20 sm:py-32 lg:scroll-mt-24"
           >
             <div className="mx-auto max-w-6xl px-4 sm:px-6">
               <Reveal className="text-center">
@@ -144,7 +144,7 @@ export default function Home() {
 
           <section
             id="calculator"
-            className="scroll-mt-40 py-20 sm:py-32 lg:scroll-mt-24"
+            className="w-full max-w-full overflow-x-hidden scroll-mt-40 py-20 sm:py-32 lg:scroll-mt-24"
           >
             <div className="mx-auto max-w-6xl px-4 sm:px-6">
               <Reveal className="text-center">
@@ -164,9 +164,9 @@ export default function Home() {
             </div>
           </section>
 
-          <section id="proof" className="relative scroll-mt-40 lg:scroll-mt-24">
+          <section id="proof" className="relative w-full max-w-full overflow-x-hidden scroll-mt-40 lg:scroll-mt-24">
             <div
-              className="gpu pointer-events-none absolute -inset-y-96 inset-x-0"
+              className="gpu pointer-events-none absolute -inset-y-96 inset-x-0 overflow-hidden"
               aria-hidden="true"
             >
               <div className="absolute inset-0 bg-[linear-gradient(to_bottom,rgba(5,5,5,0)_0%,rgba(5,5,5,0.06)_10%,rgba(5,5,5,0.22)_20%,rgba(5,5,5,0.55)_28%,rgba(5,5,5,0.9)_34%,#050505_40%,#050505_60%,rgba(5,5,5,0.9)_66%,rgba(5,5,5,0.55)_72%,rgba(5,5,5,0.22)_80%,rgba(5,5,5,0.06)_90%,rgba(5,5,5,0)_100%)]" />

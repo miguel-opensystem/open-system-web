@@ -45,7 +45,7 @@ export function Partnership() {
   return (
     <section
       id="partnership"
-      className="scroll-mt-40 py-20 sm:py-32 lg:scroll-mt-24"
+      className="w-full max-w-full overflow-x-hidden scroll-mt-40 py-20 sm:py-32 lg:scroll-mt-24"
     >
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <Reveal className="text-center">

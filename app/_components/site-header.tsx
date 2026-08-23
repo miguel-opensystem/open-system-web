@@ -100,7 +100,7 @@ export function SiteHeader({
   });
 
   return (
-    <header className="gpu sticky top-0 z-50 bg-[var(--background)]/80 pt-[env(safe-area-inset-top)] backdrop-blur-xl">
+    <header className="gpu sticky top-0 z-50 w-full max-w-[100vw] overflow-x-hidden bg-[var(--background)]/80 pt-[env(safe-area-inset-top)] backdrop-blur-xl">
       <div className="relative mx-auto flex h-16 max-w-6xl items-center justify-between gap-3 px-4 sm:h-[4.25rem] sm:px-6">
         <Link href={homeHref} className="relative z-10 min-w-0 shrink-0">
           <Wordmark />

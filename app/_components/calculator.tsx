@@ -364,7 +364,7 @@ export function Calculator() {
         : copy.calc.ready;
 
   return (
-    <div className="gpu overflow-hidden rounded-[1.5rem] border border-[color:var(--card-border)] bg-[var(--card)] shadow-[0_30px_90px_-45px_rgba(0,0,0,0.4)] backdrop-blur-2xl sm:rounded-[2rem]">
+    <div className="gpu w-full max-w-full overflow-hidden rounded-[1.5rem] border border-[color:var(--card-border)] bg-[var(--card)] shadow-[0_30px_90px_-45px_rgba(0,0,0,0.4)] backdrop-blur-2xl sm:rounded-[2rem]">
       <div className="flex items-center justify-between border-b border-[color:var(--card-border)] px-4 py-3 sm:px-7">
         <p className="text-[13px] font-medium tracking-[-0.01em]">
           {copy.calc.title}

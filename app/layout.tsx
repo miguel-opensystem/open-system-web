@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist } from "next/font/google";
 import { HelpProvider } from "./_components/help-dialog";
 import { LocaleProvider } from "./_i18n/provider";
@@ -15,19 +15,21 @@ export const metadata: Metadata = {
     "The revenue infrastructure behind creator-led businesses. Turning existing attention into compounding enterprise value.",
 };
 
-export const viewport = {
+export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  viewportFit: "cover" as const,
+  maximumScale: 1,
+  userScalable: false,
+  viewportFit: "cover",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} h-full scroll-smooth antialiased`}
+      className={`${geistSans.variable} h-full max-w-[100vw] overflow-x-hidden scroll-smooth antialiased`}
     >
-      <body className="flex min-h-full flex-col overflow-x-hidden">
+      <body className="flex min-h-full max-w-[100vw] flex-col overflow-x-hidden">
         <LocaleProvider>
           <HelpProvider>{children}</HelpProvider>
         </LocaleProvider>

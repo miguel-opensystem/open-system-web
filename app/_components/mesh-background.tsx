@@ -34,7 +34,7 @@ export function MeshBackground() {
 
   return (
     <div
-      className="grain gpu pointer-events-none fixed inset-0 -z-10 overflow-hidden bg-[var(--background)]"
+      className="grain gpu pointer-events-none fixed inset-0 -z-10 w-full max-w-[100vw] overflow-hidden bg-[var(--background)]"
       aria-hidden="true"
     >
       {blobs.map((blob, i) => (

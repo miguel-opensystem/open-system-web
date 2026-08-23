@@ -1,10 +1,10 @@
 import { SparkIcon } from "./icons";
 
 export const glassCard =
-  "gpu group relative flex h-full flex-col overflow-hidden rounded-3xl border border-[color:var(--card-border)] bg-[var(--card)] shadow-[0_8px_30px_rgba(0,0,0,0.04)] backdrop-blur-2xl transition-all duration-500 ease-out [@media(hover:hover)]:hover:scale-[1.02] [@media(hover:hover)]:hover:shadow-xl";
+  "gpu group relative flex h-full w-full max-w-full flex-col overflow-hidden rounded-3xl border border-[color:var(--card-border)] bg-[var(--card)] shadow-[0_8px_30px_rgba(0,0,0,0.04)] backdrop-blur-2xl transition-all duration-500 ease-out [@media(hover:hover)]:hover:scale-[1.02] [@media(hover:hover)]:hover:shadow-xl";
 
 export const darkCard =
-  "gpu group relative flex h-full flex-col overflow-hidden rounded-3xl border border-white/10 bg-[#050505]/95 text-white shadow-[0_24px_70px_-34px_rgba(0,0,0,0.7)] backdrop-blur-2xl transition-all duration-500 ease-out [@media(hover:hover)]:hover:scale-[1.02] [@media(hover:hover)]:hover:shadow-2xl";
+  "gpu group relative flex h-full w-full max-w-full flex-col overflow-hidden rounded-3xl border border-white/10 bg-[#050505]/95 text-white shadow-[0_24px_70px_-34px_rgba(0,0,0,0.7)] backdrop-blur-2xl transition-all duration-500 ease-out [@media(hover:hover)]:hover:scale-[1.02] [@media(hover:hover)]:hover:shadow-2xl";
 
 export const primaryButton =
   "group inline-flex h-12 items-center justify-center gap-2 rounded-full bg-[var(--btn)] px-6 text-[15px] font-medium text-[var(--btn-fg)] transition-all duration-500 ease-out sm:px-7 [@media(hover:hover)]:hover:scale-[1.02] [@media(hover:hover)]:hover:shadow-xl";

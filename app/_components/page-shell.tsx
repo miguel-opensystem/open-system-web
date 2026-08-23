@@ -15,14 +15,14 @@ export function PageShell({
 }) {
   return (
     <MotionRoot>
-      <div className="relative flex min-h-full flex-1 flex-col font-sans text-[var(--fg)] antialiased">
+      <div className="relative flex min-h-full max-w-[100vw] flex-1 flex-col font-sans text-[var(--fg)] antialiased">
         <MeshBackground />
         <SiteHeader
           bookingUrl={bookingUrl}
           showSections={false}
           ctaLabel={ctaLabel}
         />
-        <main className="flex-1">{children}</main>
+        <main className="max-w-[100vw] flex-1 overflow-x-hidden">{children}</main>
         <SiteFooter bookingUrl="/book" />
       </div>
     </MotionRoot>

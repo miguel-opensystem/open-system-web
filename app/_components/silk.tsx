@@ -57,7 +57,7 @@ export function Silk({
 
   return (
     <div
-      className={`gpu relative overflow-hidden rounded-3xl ${palette.base} ${className}`}
+      className={`gpu relative w-full max-w-full overflow-hidden rounded-3xl ${palette.base} ${className}`}
     >
       <motion.div
         className={`gpu absolute -inset-[45%] ${palette.conic} blur-3xl`}
@@ -161,7 +161,7 @@ export function Marquee({ items }: { items: string[] }) {
   const row = [...items, ...items];
 
   return (
-    <div className="relative overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">
+    <div className="relative w-full max-w-full overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">
       <motion.div
         className="gpu flex w-max gap-3 pr-3"
         animate={reduced ? undefined : { x: ["0%", "-50%"] }}

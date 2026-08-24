@@ -144,7 +144,7 @@ export default function Home() {
 
           <section
             id="calculator"
-            className="w-full max-w-full overflow-x-hidden scroll-mt-40 py-20 sm:py-32 lg:scroll-mt-24"
+            className="w-full max-w-full overflow-x-clip scroll-mt-40 pt-20 pb-8 sm:pt-32 sm:pb-10 lg:scroll-mt-24"
           >
             <div className="mx-auto max-w-6xl px-4 sm:px-6">
               <Reveal className="text-center">
@@ -164,18 +164,20 @@ export default function Home() {
             </div>
           </section>
 
-          <section id="proof" className="relative w-full max-w-full overflow-x-hidden scroll-mt-40 lg:scroll-mt-24">
+          <section id="proof" className="relative w-full max-w-full scroll-mt-40 py-12 sm:py-16 lg:scroll-mt-24">
             <div
-              className="gpu pointer-events-none absolute -inset-y-96 inset-x-0 overflow-hidden"
+              className="pointer-events-none absolute inset-0 overflow-hidden"
               aria-hidden="true"
             >
-              <div className="absolute inset-0 bg-[linear-gradient(to_bottom,rgba(5,5,5,0)_0%,rgba(5,5,5,0.06)_10%,rgba(5,5,5,0.22)_20%,rgba(5,5,5,0.55)_28%,rgba(5,5,5,0.9)_34%,#050505_40%,#050505_60%,rgba(5,5,5,0.9)_66%,rgba(5,5,5,0.55)_72%,rgba(5,5,5,0.22)_80%,rgba(5,5,5,0.06)_90%,rgba(5,5,5,0)_100%)]" />
+              <div className="absolute inset-0 bg-[#050505]" />
+              <div className="absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-[var(--background)] to-transparent" />
+              <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-[var(--background)] to-transparent" />
               <div className="gpu absolute top-[18%] left-[4%] h-[44rem] w-[44rem] rounded-full bg-[radial-gradient(circle,rgba(10,132,255,0.38),rgba(10,132,255,0)_66%)] blur-3xl" />
               <div className="gpu absolute top-[38%] right-[-14%] h-[46rem] w-[46rem] rounded-full bg-[radial-gradient(circle,rgba(94,92,230,0.34),rgba(94,92,230,0)_66%)] blur-3xl" />
               <div className="gpu absolute bottom-[16%] left-[22%] h-[40rem] w-[40rem] rounded-full bg-[radial-gradient(circle,rgba(90,200,250,0.22),rgba(90,200,250,0)_66%)] blur-3xl" />
             </div>
 
-            <div className="relative mx-auto max-w-6xl px-4 pt-64 pb-72 sm:px-6 sm:pt-72 sm:pb-80">
+            <div className="relative mx-auto max-w-6xl px-4 sm:px-6">
               <Reveal className="text-center">
                 <SectionLabel tone="dark">{copy.home.proofLabel}</SectionLabel>
                 <h2 className="mx-auto mt-6 max-w-3xl text-4xl leading-[1.08] font-semibold tracking-[-0.04em] text-white sm:text-5xl">

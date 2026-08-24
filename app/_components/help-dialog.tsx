@@ -42,7 +42,11 @@ export function HelpTrigger({
 }) {
   const { open } = useHelp();
   return (
-    <button type="button" onClick={open} className={`cursor-pointer ${className ?? ""}`}>
+    <button
+      type="button"
+      onClick={open}
+      className={`cursor-pointer appearance-none border-0 bg-transparent ${className ?? ""}`}
+    >
       {children}
     </button>
   );

@@ -15,7 +15,7 @@ const sectionIds = [
 ] as const;
 
 const navItem =
-  "rounded-full px-3.5 py-1.5 text-[13px] whitespace-nowrap transition-colors duration-300";
+  "relative z-10 inline-flex min-h-11 shrink-0 touch-manipulation items-center rounded-full px-3.5 py-1.5 text-[13px] whitespace-nowrap transition-colors duration-300 lg:min-h-0";
 
 export function SiteHeader({
   bookingUrl,
@@ -95,29 +95,30 @@ export function SiteHeader({
     };
   }, [showSections]);
 
-  const links = sections.map((section) => {
-    const isActive = showSections && active === section.id;
-    return (
-      <Link
-        key={section.id}
-        href={`/#${section.id}`}
-        aria-current={isActive ? "true" : undefined}
-        className={`${navItem} ${
-          isActive
-            ? "font-medium text-[var(--fg)]"
-            : "text-[var(--muted)] hover:text-[var(--fg)]"
-        }`}
-      >
-        {section.label}
-      </Link>
-    );
-  });
+  const sectionLinks = (keyPrefix: string) =>
+    sections.map((section) => {
+      const isActive = showSections && active === section.id;
+      return (
+        <Link
+          key={`${keyPrefix}-${section.id}`}
+          href={`/#${section.id}`}
+          aria-current={isActive ? "true" : undefined}
+          className={`${navItem} ${
+            isActive
+              ? "font-medium text-[var(--fg)]"
+              : "text-[var(--muted)] hover:text-[var(--fg)]"
+          }`}
+        >
+          {section.label}
+        </Link>
+      );
+    });
 
   return (
     <>
     <header
       ref={headerRef}
-      className="fixed top-0 right-0 left-0 z-50 w-full max-w-[100vw] overflow-x-clip bg-[var(--background)]/80 pt-[env(safe-area-inset-top)] backdrop-blur-xl"
+      className="fixed top-0 right-0 left-0 z-50 w-full bg-[var(--background)]/80 pt-[env(safe-area-inset-top)] backdrop-blur-xl"
     >
       <div className="relative mx-auto flex h-16 max-w-6xl items-center justify-between gap-3 px-4 sm:h-[4.25rem] sm:px-6">
         <Link href={homeHref} className="relative z-10 min-w-0 shrink-0">
@@ -128,8 +129,8 @@ export function SiteHeader({
           className="absolute top-1/2 left-1/2 hidden -translate-x-1/2 -translate-y-1/2 lg:block"
           aria-label="Page sections"
         >
-          <div className="gpu flex items-center gap-0.5 rounded-full border border-[color:var(--card-border)] bg-[var(--card)] px-1.5 py-1 shadow-[0_8px_30px_rgba(0,0,0,0.06)] backdrop-blur-2xl">
-            {links}
+          <div className="flex items-center gap-0.5 rounded-full border border-[color:var(--card-border)] bg-[var(--card)] px-1.5 py-1 shadow-[0_8px_30px_rgba(0,0,0,0.06)] backdrop-blur-2xl">
+            {sectionLinks("desktop")}
           </div>
         </nav>
 
@@ -159,18 +160,26 @@ export function SiteHeader({
       </div>
 
       <div className="px-4 pb-3 sm:px-6 lg:hidden">
-        <nav
-          className="gpu flex items-center gap-0.5 overflow-x-auto rounded-full border border-[color:var(--card-border)] bg-[var(--card)] px-1.5 py-1 shadow-[0_8px_30px_rgba(0,0,0,0.06)] backdrop-blur-2xl [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
-          aria-label="Page sections"
-        >
-          {links}
-          <Link href="/faq" className={`${navItem} text-[var(--muted)]`}>
-            {copy.nav.faq}
-          </Link>
-          <HelpTrigger className={`${navItem} text-[var(--muted)]`}>
-            {copy.nav.help}
-          </HelpTrigger>
-        </nav>
+        <div className="relative">
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-0 rounded-full border border-[color:var(--card-border)] bg-[var(--card)] shadow-[0_8px_30px_rgba(0,0,0,0.06)] backdrop-blur-2xl"
+          />
+          <nav
+            className="relative z-10 overflow-x-auto overscroll-x-contain [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+            aria-label="Page sections"
+          >
+            <div className="flex w-max items-center gap-0.5 px-1.5 py-1">
+              {sectionLinks("mobile")}
+              <Link href="/faq" className={`${navItem} text-[var(--muted)]`}>
+                {copy.nav.faq}
+              </Link>
+              <HelpTrigger className={`${navItem} text-[var(--muted)]`}>
+                {copy.nav.help}
+              </HelpTrigger>
+            </div>
+          </nav>
+        </div>
       </div>
     </header>
     <div aria-hidden="true" style={{ height: headerHeight }} />

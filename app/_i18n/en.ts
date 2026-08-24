@@ -19,7 +19,7 @@ export const en = {
     platform: "Platform",
     services: "Services",
     company: "Company",
-    about: "The Thesis",
+    about: "About",
     faq: "FAQ",
     careers: "Operators",
     contact: "Initiate",
@@ -571,19 +571,19 @@ export const en = {
     ],
   },
   about: {
-    label: "The Thesis",
-    title: "Most creators have attention.",
-    titleAccent: "Few have the systems to turn it into revenue.",
-    body: "The creator economy is moving from one-off views to recurring business value. Open System builds and runs the backend that captures revenue your audience is already generating. We connect existing tools into one working system.",
-    global: "The gap",
-    globalTitle: "Views alone",
-    globalAccent: "do not make a business.",
-    stats: [
-      { figure: "Attention", label: "Easy to get, hard to keep, and often unused." },
-      { figure: "Infrastructure", label: "The missing piece between audience and revenue." },
-      { figure: "Integration", label: "Existing tools, connected into one system." },
-      { figure: "Your brand", label: "We stay in the background. You remain the public face." },
-    ],
+    label: "About",
+    title: "We build creator revenue infrastructure.",
+    titleAccent: "",
+    body: "Open System is the operating layer behind creator-led businesses. We install the systems that capture, convert, and retain revenue — and we run them after they are live.",
+    whoWeAre: "Who we are",
+    whoWeAreBody:
+      "A fractional growth operator. Not an agency, and not a software vendor. We stay in the background. You remain the public brand. Operators run intake, checkout, recovery, and retention as one backend.",
+    started: "When it started",
+    startedBody:
+      "The work began inside creator businesses that already had an audience and still leaked revenue. Open System is that operating practice, built as infrastructure: one engagement, one team, one system.",
+    mission: "The mission",
+    missionBody:
+      "Build the missing revenue layer for creator-led companies. Capture demand, convert it, recover what would have been lost, and retain members — so existing attention compounds into enterprise value.",
     how: "How we work",
     hold: "We install the systems and operate them.",
     principles: [

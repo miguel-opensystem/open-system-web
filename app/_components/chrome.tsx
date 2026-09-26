@@ -32,12 +32,14 @@ export function Wordmark({ className = "" }: { className?: string }) {
 export function SectionLabel({
   children,
   tone = "light",
+  align = "center",
 }: {
   children: string;
   tone?: "light" | "dark";
+  align?: "center" | "start";
 }) {
   return (
-    <div className="flex justify-center">
+    <div className={align === "start" ? "flex justify-start" : "flex justify-center"}>
       <span
         className={
           tone === "dark"

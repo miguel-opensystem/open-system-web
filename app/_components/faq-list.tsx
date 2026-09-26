@@ -15,7 +15,7 @@ export function FaqList({ items }: { items: FaqItem[] }) {
   const [open, setOpen] = useState<number | null>(0);
 
   return (
-    <div className="divide-y divide-black/[0.06] border-y border-black/[0.06]">
+    <div>
       {items.map((item, index) => {
         const isOpen = open === index;
         return (

@@ -178,13 +178,13 @@ export function ServiceSystems({
 
   return (
     <Stagger
-      className="grid auto-rows-[minmax(140px,auto)] gap-4 sm:grid-cols-2 lg:grid-cols-12"
+      className="grid auto-rows-[minmax(140px,auto)] gap-4 overflow-visible sm:grid-cols-2 lg:grid-cols-12"
       step={0.08}
     >
       {items.map((item) => (
         <StaggerItem
           key={item.stackIndex}
-          className={`${item.span} ${item.raw ? "" : "h-full"}`}
+          className={`${item.span} overflow-visible ${item.raw ? "" : "h-full"}`}
         >
           <SystemCard item={item} active={active} />
         </StaggerItem>

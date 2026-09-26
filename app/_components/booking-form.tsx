@@ -144,7 +144,7 @@ export function BookingForm() {
             exit={{ opacity: 0, y: -8 }}
             transition={{ duration: 0.4, ease: EASE }}
           >
-            <p className="text-[11px] tracking-[0.14em] text-[#86868B] uppercase">
+            <p className="text-[13px] tracking-[-0.01em] text-[#86868B]">
               {copy.book.request}
             </p>
             <h2 className="mt-4 text-[22px] leading-8 font-semibold tracking-[-0.025em]">
@@ -254,7 +254,7 @@ export function BookingForm() {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.5, ease: EASE }}
           >
-            <p className="text-[11px] tracking-[0.14em] text-[#86868B] uppercase">
+            <p className="text-[13px] tracking-[-0.01em] text-[#86868B]">
               {copy.book.request}
             </p>
             <h2 className="mt-4 text-[22px] leading-8 font-semibold tracking-[-0.025em]">

@@ -1,5 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Geist } from "next/font/google";
+import { Suspense } from "react";
+import { FloatingCalculatorCTA } from "./_components/floating-calculator-cta";
 import { HelpProvider } from "./_components/help-dialog";
 import { LocaleProvider } from "./_i18n/provider";
 import "./globals.css";
@@ -29,9 +31,16 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       lang="en"
       className={`${geistSans.variable} h-full max-w-[100vw] overflow-x-clip scroll-smooth antialiased`}
     >
-      <body className="flex min-h-full max-w-[100vw] flex-col overflow-x-clip">
+      <body
+        className={`${geistSans.className} flex min-h-full max-w-[100vw] flex-col overflow-x-clip font-sans`}
+      >
         <LocaleProvider>
-          <HelpProvider>{children}</HelpProvider>
+          <HelpProvider>
+            {children}
+            <Suspense fallback={null}>
+              <FloatingCalculatorCTA />
+            </Suspense>
+          </HelpProvider>
         </LocaleProvider>
       </body>
     </html>

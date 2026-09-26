@@ -17,7 +17,7 @@ function Card({ item }: { item: Testimonial }) {
       </blockquote>
       <figcaption className="mt-5 flex items-center gap-3">
         <span
-          className={`size-7 shrink-0 rounded-full bg-gradient-to-br ${item.avatar}`}
+          className={`size-7 shrink-0 rounded-full border-2 border-white bg-gradient-to-br ${item.avatar}`}
           aria-hidden="true"
         />
         <span>

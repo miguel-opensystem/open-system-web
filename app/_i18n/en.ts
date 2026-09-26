@@ -3,10 +3,11 @@ export const en = {
     calculator: "MRR Calculator",
     services: "Services",
     infrastructure: "Infrastructure",
-    proof: "Proof",
+    performance: "Performance",
     partnership: "Operating Model",
     faq: "FAQ",
     help: "Help",
+    about: "About",
     book: "Book",
     bookCta: "Book Strategy Call",
     apply: "Apply",
@@ -30,6 +31,7 @@ export const en = {
     strategyCall: "Strategy Call",
     rights: "All rights reserved.",
     built: "Built for creators",
+    expertsIn: "Experts in:",
   },
   help: {
     close: "Close",
@@ -42,7 +44,7 @@ export const en = {
       },
       {
         title: "See what the audience is worth",
-        href: "/#calculator",
+        href: "/calculator",
       },
       {
         title: "Work with us as an operator",
@@ -59,45 +61,35 @@ export const en = {
     ready: "Ready",
     analyzing: "Analyzing",
     live: "Live",
-    q1: "Total audience size",
-    followers: "Total audience size",
+    q1: "Audience size",
+    q1hint:
+      "Followers, subscribers, or the audience already attached to your name.",
+    followers: "Audience size",
     followersValue: "people",
     q2: "Current monthly revenue",
-    q2hint: "Zero is fine. Brand deals, or nothing yet.",
+    q2hint: "What the business actually collects in a typical month. Zero is fine.",
+    revenueLabel: "Current monthly revenue",
+    q3: "Owned audience (email / SMS)",
+    q3hint:
+      "People you can reach without the algorithm. Type the number you actually have.",
     contacts: "contacts",
     listLabel: "Owned audience (email / SMS)",
-    q3: "Owned audience (email / SMS)",
-    q3hint: "People you can reach without the algorithm.",
-    revenueLabel: "Current monthly revenue",
     q4: "How the audience pays you now",
-    q5: "Where does a new follower land?",
-    q5hint: "After they follow. Before anyone pays you.",
-    landing: {
-      feed: "They stay in the feed",
-      bio: "A link in bio",
-      owned: "A list I own",
+    q4hint: "How money comes in today, even if it is inconsistent. Select one.",
+    q5: "Primary platform",
+    q5hint: "Where the audience lives today. Select one.",
+    q6: "Where does a new follower land?",
+    q6hint: "After they follow. Before anyone pays you. Select one.",
+    q7: "Backend automation status",
+    q7hint: "How inbound is handled after someone finds you. Select one.",
+    q8: "Churn and failed payments",
+    q8hint: "Whether failed Stripe charges and cancellations are being recovered.",
+    platform: {
+      instagram: "Instagram",
+      tiktok: "TikTok",
+      youtube: "YouTube",
+      linkedin: "LinkedIn",
     },
-    q6: "How much inbound goes unanswered?",
-    q6hint: "DMs, emails, comments — anything you never get back to.",
-    q7: "How inbound is handled",
-    followup: {
-      manual: "Manual / DMs",
-      mixed: "Founder-led",
-      automated: "A system",
-    },
-    cta: "Calculate uncaptured revenue",
-    lockedLabel: "Uncaptured monthly MRR",
-    lockedBody:
-      "You do not need an offer yet. Audience size is enough to estimate what is uncaptured.",
-    processingTitle: "Calculating your results",
-    processingBody:
-      "We are reviewing audience size, inbound volume, and where new followers land.",
-    steps: [
-      "Reading the audience",
-      "Isolating owned reach",
-      "Modeling inbound",
-      "Finding the leak",
-    ],
     delivery: {
       none: "Nothing yet",
       brand: "Brand deals",
@@ -105,26 +97,139 @@ export const en = {
       subscriptions: "Subscriptions",
       coaching: "Coaching / services",
     },
-    leakLabel: "Uncaptured monthly MRR",
-    leakFront: "Front-End Capture Leak",
-    leakOps: "Operational & Follow-up Leak",
-    leakRetention: "Retention & Churn Leak",
-    aYear: "a year, if nothing is installed",
-    today: "What you make today",
-    uncapturedBar: "Uncaptured",
-    canReach: "you can reach, out of",
-    resultCta: "Book Strategy Call",
-    verdict: {
-      none: "You have an audience, but there is no system for them to pay you yet.",
-      brand:
-        "Brand deals reset every month. There is no recurring system underneath the following.",
-      digital:
-        "A product sells once. Buyers have no place to stay and keep paying.",
-      subscriptions:
-        "The model is right, but many people in the audience are never captured.",
-      coaching:
-        "Coaching is limited by your calendar. The rest of the audience has no way to buy.",
+    landing: {
+      feed: "They stay in the feed",
+      bio: "A link in bio",
+      owned: "A list I own",
     },
+    automation: {
+      automated: "Fully Automated",
+      bio: "Basic Link-in-Bio",
+      manual: "Manual DMs",
+      nothing: "Nothing",
+    },
+    retentionStatus: {
+      recovered: "Actively Recovered",
+      untracked: "I don't track this",
+    },
+    of: "of",
+    needNumber: "Enter a number to continue.",
+    needChoice: "Select one to continue.",
+    progressLabel: "Estimate progress",
+    cta: "Generate Leak Report",
+    metaTitle: "MRR Calculator — Open System",
+    metaDescription:
+      "See the monthly revenue currently going uncaptured. Audience size is enough. No email required.",
+    pageBody:
+      "We estimate the monthly revenue currently going uncaptured — capture, follow-up, and retention. Audience size is enough. No email required.",
+    pageEstimate:
+      "The number is an estimate, not a quote. It models capture, follow-up, and retention against the audience you already have. No email required.",
+    pageBeats: [
+      {
+        title: "Your current setup",
+        body: "Audience, how you sell, and how inbound is handled today. Enough to estimate the leak.",
+      },
+      {
+        title: "A leak report, not a quote",
+        body: "We break uncaptured MRR into capture, follow-up, and retention — with a diagnosis for each leak and what would close it.",
+      },
+      {
+        title: "Then decide",
+        body: "If you want the systems installed, book a strategy call. The report is the first look. The engagement is optional.",
+      },
+    ],
+    runMetaTitle: "Infrastructure Leak — Open System",
+    runMetaDescription:
+      "Estimate the monthly revenue currently going uncaptured. Audience size is enough. No email required.",
+    next: "Next",
+    back: "Back",
+    lockedLabel: "Uncaptured monthly MRR",
+    lockedBody:
+      "You do not need an offer yet. Audience size is enough to estimate what is uncaptured.",
+    floatTitle: "Uncovered Revenue Leak",
+    floatBody:
+      "Calculate how much monthly recurring revenue your current systems are missing.",
+    floatCta: "Run Estimate",
+    floatDismiss: "Dismiss",
+    processingTitle: "Building your leak report",
+    processingBody:
+      "We are mapping owned reach, inbound handling, and whether failed payments are being recovered.",
+    steps: [
+      "Reading the audience",
+      "Measuring owned reach",
+      "Scoring capture",
+      "Modeling follow-up",
+      "Checking retention",
+      "Writing the report",
+    ],
+    reportLabel: "Leak Report",
+    leakLabel: "Uncaptured every month",
+    leakFront: "Capture",
+    leakOps: "Follow-up",
+    leakRetention: "Retention",
+    aYear: "leaves over the next twelve months if nothing is installed",
+    today: "What you collect today",
+    uncapturedBar: "What you are missing",
+    canReach: "owned contacts, out of",
+    findingsTitle: "Where it is leaking",
+    installLabel: "What closes it",
+    findings: {
+      listGap: "Most of the following is not a contact you can sell to.",
+      lowOwned: "Owned reach is under 10% of the audience.",
+      timeBound: "Follow-up still depends on your time, not a system.",
+      untracked: "Failed payments leave without a recovery pass.",
+      noOffer: "There is no recurring offer under the attention.",
+      brandReset: "Revenue resets when the next brand deal is not booked.",
+      feedDeath: "New followers stay in the feed instead of entering a system.",
+      bioOnly: "The owned path is a static link in bio — not a capture system.",
+    },
+    lost: {
+      capture:
+        "{uncaptured} people in the {audience} audience are not a record you own. {platform} traffic dies in the feed or a static bio. That gap is {amount} / month that never reaches checkout.",
+      captureFix:
+        "Intake funnel, application, and CRM so a click becomes owned data — not a follower who disappears.",
+      followup:
+        "Inbound still waits on you. DMs, comments, and form fills sit until you get to them. That delay is {amount} / month that never gets a second touch or a route to checkout.",
+      followupZero:
+        "You are not collecting monthly revenue yet, and inbound still sits until you handle it. Unanswered demand from this audience is {amount} / month left on the table.",
+      followupFix:
+        "Qualification agents and a GoHighLevel pipeline that vets intent and sends high-fit buyers to a call or paywall without you in the thread.",
+      retention:
+        "Failed Stripe charges are not being recovered. Against {revenue} / month in current revenue, that is {amount} walking out before anyone sees the card failed.",
+      retentionFix:
+        "Dunning, win-back sequences, and a living retention score that acts before the cancellation request lands.",
+    },
+    clear: {
+      capture:
+        "Capture is contained. New attention is already converting into a list you own, so the intake leak is not the primary gap.",
+      captureFix:
+        "Keep the owned path. The remaining work is downstream — follow-up and recovery.",
+      followup:
+        "Follow-up is running as a system. Inbound is not sitting in DMs waiting on you, so there is no estimated leak from unanswered demand.",
+      followupFix:
+        "Leave routing in place. Pressure moves to capture quality and failed-payment recovery.",
+      retention:
+        "Failed payments are being recovered. Churn is treated as a process, so the retention leak is contained on current revenue.",
+      retentionFix:
+        "Keep recovery live. The remaining value is in capture and the first follow-up.",
+    },
+    verdict: {
+      none: "The audience is already there. There is no checkout path and no owned list large enough to sell into. Attention hits the feed and stops.",
+      brand:
+        "Brand deals reset to zero. There is no recurring checkout under the following, so every month starts over.",
+      digital:
+        "The product sells once. There is no place for buyers to stay and keep paying, so revenue does not compound.",
+      subscriptions:
+        "The membership model is right, but most of the audience never enters it. Capture is the leak.",
+      coaching:
+        "Coaching is capped by your calendar. The rest of the audience has no way to buy without a call.",
+    },
+    plugCta: "Book Strategy Call",
+    homeCta: "Back to homepage",
+    gapTitle: "This number repeats every month.",
+    gapBody:
+      "Capture, follow-up, and recovery are not installed. Until they are, this revenue stays uncaptured. We wire the stack. You stay on content.",
+    recalculate: "Recalculate",
   },
   book: {
     label: "Strategy Call",
@@ -195,9 +300,9 @@ export const en = {
   },
   notFound: {
     label: "404",
-    title: "This page is not here.",
-    body: "The link is broken or the page has moved. You can return home or book a strategy call.",
-    home: "Back home",
+    title: "Dead End.",
+    body: "This node does not exist in the system.",
+    home: "Return to Operations",
     book: "Book Strategy Call",
   },
   home: {
@@ -207,11 +312,10 @@ export const en = {
     heroBody:
       "We are the revenue infrastructure behind creator-led businesses. Existing attention, turned into compounding enterprise value.",
     bookCta: "Book Strategy Call",
-    calcCta: "Calculate your MRR leak",
+    calcCta: "Calculate Missing Revenue",
     servicesCta: "See the services",
     detailsOpen: "Expand",
     detailsClose: "Close",
-    helpLink: "Not sure where to start?",
     trusted: "Operating exclusively with high-leverage creators (20k+ audience).",
     fromPractice: "From the practice",
     testimonials: [
@@ -251,23 +355,80 @@ export const en = {
         detail: "Faith & lifestyle · 180K",
       },
     ],
-    calcLabel: "Revenue calculator",
+    calcLabel: "Revenue estimate",
     calcTitle: "See what the audience",
     calcTitleAccent: "is currently worth.",
     calcBody:
-      "No email required. An estimate of monthly revenue that is not being captured.",
+      "We install the systems that capture, convert, and retain revenue. This estimate shows the monthly amount currently going uncaptured. No email required.",
+    teaserTitle: "Discover your uncaptured revenue.",
+    teaserBody:
+      "Find out exactly how much monthly recurring revenue is leaking from your current systems.",
+    teaserCta: "Launch Calculator",
+    scaleLabel: "The practice",
+    scaleTitle: "We operate globally.",
+    scaleTitleAccent: "One infrastructure.",
+    scaleBody:
+      "Creator businesses across markets. Audience, checkout, and recovery running as the same system — not a local agency stack.",
+    scaleLive: "Systems online",
+    scaleFoot:
+      "North America, Europe, the Gulf, and APAC. The operating layer does not change with the time zone.",
+    scaleStats: [
+      {
+        value: 62,
+        decimals: 0,
+        prefix: "",
+        suffix: "M+",
+        label: "Views attributed",
+        detail: "On the properties we operate — not rented reach.",
+      },
+      {
+        value: 2.5,
+        decimals: 1,
+        prefix: "",
+        suffix: "M+",
+        label: "Audience reach",
+        detail: "Combined following across the twelve live systems.",
+      },
+      {
+        value: 3.8,
+        decimals: 1,
+        prefix: "$",
+        suffix: "M+",
+        label: "Revenue processed",
+        detail: "Checkout, plans, and recovered MRR this year.",
+      },
+      {
+        value: 12,
+        decimals: 0,
+        prefix: "",
+        suffix: "",
+        label: "Systems live",
+        detail: "Creator businesses with the stack installed now.",
+      },
+    ],
+    scaleMarkets: [
+      "New York",
+      "Los Angeles",
+      "London",
+      "Dubai",
+      "Toronto",
+      "Berlin",
+      "Singapore",
+      "Sydney",
+      "Miami",
+      "Lisbon",
+    ],
     servicesLabel: "Services",
     serviceKicker: "Service",
     servicesTitle:
       "The revenue infrastructure behind creator businesses.",
     servicesTitleAccent: "",
-    servicesBody:
-      "Four services that capture, convert, and retain revenue. You stay focused on the audience. We run the systems.",
+    servicesBody: "Four systems. You make content. We run the rest.",
     pillars: [
       {
         title: "Audience Intelligence",
         summary:
-          "Own your lead database. We deploy autonomous intake funnels and advanced segmentation to identify high-intent enterprise buyers before they drop off.",
+          "Your audience is a comment section, not a database. We turn it into one.",
         deliverables: [
           "Buyer qualification",
           "Intake and application",
@@ -277,7 +438,7 @@ export const en = {
       {
         title: "Monetization Architecture",
         summary:
-          "Transition from fragmented offers to a unified commerce engine. We build the financial plumbing for high-ticket applications, recurring memberships, and diversified product lines.",
+          "A Stripe link and a Skool page isn't a system. We build the one that runs itself.",
         deliverables: [
           "High-ticket offer design",
           "Community deployment",
@@ -287,7 +448,7 @@ export const en = {
       {
         title: "Agentic Operations",
         summary:
-          "Eliminate human administration. We install autonomous systems for sales qualification, behavioral follow-ups, and frictionless client onboarding.",
+          "Every unanswered DM is money you already made. We make sure it gets collected.",
         deliverables: [
           "Master CRM",
           "Revenue automations",
@@ -297,7 +458,7 @@ export const en = {
       {
         title: "Retention Engineering",
         summary:
-          "Scale against a known value. We deploy real-time analytics to track LTV, identify funnel bottlenecks, and automate failed payment recovery to protect your MRR.",
+          "Members don't cancel loudly — they go quiet. We catch it before you would.",
         deliverables: ["Churn recovery", "Activation sequences", "Paid scale"],
       },
     ],
@@ -412,46 +573,31 @@ export const en = {
           "The stack is documented as an operating system: what runs, who owns it, and how to change it. When we step back, the infrastructure stays.",
       },
     ],
-    proofLabel: "System Benchmarks",
+    proofLabel: "Performance",
     proofTitle: "What the system looks like",
     proofTitleAccent: "when it is running.",
     proofBody: "Members, payments, and recovery — running as one surface.",
-    trustStats: [
-      { figure: "100%", label: "Platform Independence" },
-      { figure: "Day 1", label: "Immediate ROI deployment" },
-      { figure: "24/7", label: "Autonomous payment recovery" },
-      { figure: "Enterprise", label: "Valuation based on ARR" },
-    ],
-    shift: "The change",
-    shiftTitle: "Same audience, a more stable business",
-    shiftNote: "Operational states, not historical averages",
+    standardTitle: "The Backend Standard",
+    standardAccent: "Engineering predictable revenue.",
+    leakLabel: "The Leak",
+    systemLabel: "The System",
     beforeAfter: [
       {
-        metric: "Revenue shape",
-        before: "One-time drops",
-        after: "Recurring subscriptions",
+        leak: "Manual DM outreach",
+        system: "Automated lead qualification",
       },
       {
-        metric: "Every first of the month",
-        before: "Back to zero",
-        after: "Starts from last month",
+        leak: "Dead link-in-bio traffic",
+        system: "Owned email acquisition",
       },
       {
-        metric: "Monthly churn",
-        before: "Unmonitored & leaking",
-        after: "Actively tracked & recovered",
+        leak: "Unmonitored failed payments",
+        system: "Algorithmic churn recovery",
       },
       {
-        metric: "Failed payments",
-        before: "Written off as lost",
-        after: "Systematically recovered",
+        leak: "Renting algorithms",
+        system: "Owned asset valuation",
       },
-      {
-        metric: "Day-to-day admin",
-        before: "DMs and spreadsheets",
-        after: "CRM and automations",
-      },
-      { metric: "What it is worth", before: "Not sellable", after: "Priced on ARR" },
     ],
     clientTags: [
       "Fitness · 240K",
@@ -467,13 +613,73 @@ export const en = {
       "Operating exclusively with high-leverage creators (20k+ audience).",
     proofCta: "Book Strategy Call",
     partnerLabel: "The Operating Model",
-    partnerTitle: "We join the business",
-    partnerTitleAccent: "and run the systems.",
+    partnerTitle: "Tied to your growth.",
+    partnerTitleAccent: "You own the attention.",
+    partnerPitch:
+      "We operate on performance baselines and revenue-share models. If our infrastructure does not successfully expand your monthly recurring revenue, we do not expand the engagement. Zero technical debt. Pure operational alignment.",
+    partnerPipeline: [
+      {
+        step: "01",
+        kicker: "The Infrastructure Audit",
+        title: "Map the Leaks.",
+        body: "We do not guess. We map your current attention flow, auditing your link-in-bio, inbound DM volume, and calendar drop-offs to mathematically identify exactly where revenue is slipping through the cracks.",
+      },
+      {
+        step: "02",
+        kicker: "Deployment & Wiring",
+        title: "Deploy the Engine.",
+        body: "We build the custom architecture. We integrate GoHighLevel CRM, wire the Zapier webhooks, and deploy AI qualification agents to turn manual follow-ups into an automated, zero-latency machine.",
+      },
+      {
+        step: "03",
+        kicker: "Fractional Operation",
+        title: "Run the Backend.",
+        body: "Software decays without an operator. We integrate directly into your business to monitor the pipelines daily, handle technical troubleshooting, and systematically rescue failed Stripe payments. You shoot content; we manage the friction.",
+      },
+    ],
+    partnerPoints: [
+      {
+        label: "01",
+        title: "Traffic & Intake",
+        body: "We engineer the automated systems that capture inbound traffic. From link-in-bio funnels to calendar setups, we plug the leaks where attention fails to convert into owned data.",
+      },
+      {
+        label: "02",
+        title: "Qualification & Routing",
+        body: "Software is useless if it requires your time. We deploy AI qualification agents and automated GoHighLevel pipelines to vet leads in your DMs and route them directly to checkout or sales calls.",
+      },
+      {
+        label: "03",
+        title: "Retention & Recovery",
+        body: "A business is valued on its Annual Recurring Revenue. We implement algorithmic churn recovery and systematic follow-ups to rescue failed Stripe payments and compound your enterprise valuation.",
+      },
+    ],
     partnerCardTitle: "We are responsible for the result, not just the software.",
-    partnerP1:
-      "We do not hand over a dashboard and leave. Open System acts as your fractional growth operator.",
+    partnerP1: "We run the backend. You own the attention.",
     partnerP2:
-      "You focus on creating content and growing the audience. We manage the infrastructure, capture the revenue, and run the back-end.",
+      "We don't sell you software to run. We run it for you. Every month, we handle the backend — the leads, the follow-up, the failed payments — and a person checks the work before you ever see it. You pay for the result. Not the access.",
+    partnerCta: "Audit Your Infrastructure",
+    partnerBento: [
+      {
+        title: "Map the Leaks",
+        pain: "You rent attention. You don't capture it.",
+        body: "We find exactly where it's leaking — link-in-bio, DMs, calendar. You don't audit anything. We hand you the number, and what it's costing you.",
+      },
+      {
+        title: "Deploy the Engine",
+        pain: "You don't need a CRM. You need it handled.",
+        body: "We install the qualification, the follow-up, the checkout — then we run all of it. No dashboard to learn. No software to manage. Just the job, done.",
+      },
+      {
+        title: "Run the Backend",
+        pain: "Software rots. Operators don't.",
+        body: "Cards expire, tools break, leads go cold. We catch it first — a system watching, a person checking — every day, for as long as you're growing.",
+      },
+      {
+        title: "Tied to your growth.",
+        body: "Pure operational alignment. We operate on performance baselines and revenue-share models. If our infrastructure does not scale your monthly recurring revenue, we do not expand the engagement.",
+      },
+    ],
     engagement: "Engagement model",
     phases: [
       {

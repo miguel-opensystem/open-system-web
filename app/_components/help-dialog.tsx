@@ -116,7 +116,7 @@ export function HelpProvider({ children }: { children: ReactNode }) {
             >
               <div className="flex items-start justify-between gap-6">
                 <div>
-                  <p className="text-[11px] tracking-[0.14em] text-[#86868B] uppercase">
+                  <p className="text-[13px] tracking-[-0.01em] text-[#86868B]">
                     Open System
                   </p>
                   <h2
@@ -137,7 +137,7 @@ export function HelpProvider({ children }: { children: ReactNode }) {
                 </button>
               </div>
 
-              <ul className="mt-8 divide-y divide-black/[0.06]">
+              <ul className="mt-8">
                 {copy.help.paths.map((path) => (
                   <li key={path.href}>
                     <Link

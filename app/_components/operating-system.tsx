@@ -16,7 +16,7 @@ const activityMeta = [
 
 const panel =
   "gpu rounded-2xl border border-white/10 bg-white/[0.04] p-4 backdrop-blur-2xl sm:p-6";
-const label = "text-[11px] font-medium tracking-[0.14em] text-white/40 uppercase";
+const label = "text-[13px] font-medium tracking-[-0.01em] text-white/40";
 
 export function OperatingSystem() {
   const copy = useCopy();
@@ -45,7 +45,7 @@ export function OperatingSystem() {
         </div>
         <span className="flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.06] px-3 py-1">
           <LiveDot />
-          <span className="text-[11px] tracking-[0.1em] text-white/50 uppercase">
+          <span className="text-[13px] tracking-[-0.01em] text-white/50">
             {copy.os.synced}
           </span>
         </span>

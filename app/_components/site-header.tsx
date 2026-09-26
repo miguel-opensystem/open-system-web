@@ -1,21 +1,28 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import { usePathname } from "next/navigation";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useCopy } from "../_i18n/provider";
 import { Wordmark } from "./chrome";
-import { HelpTrigger } from "./help-dialog";
+import { scrollToEstimate } from "./estimate-scroll";
 import { ArrowIcon } from "./icons";
 
 const sectionIds = [
   "partnership",
   "pillars",
   "calculator",
-  "proof",
+  "performance",
 ] as const;
+
+const HEADER_GAP = 8;
 
 const navItem =
   "relative z-10 inline-flex min-h-11 shrink-0 touch-manipulation items-center rounded-full px-3.5 py-1.5 text-[13px] whitespace-nowrap transition-colors duration-300 lg:min-h-0";
+
+function isSectionId(id: string): id is (typeof sectionIds)[number] {
+  return sectionIds.includes(id as (typeof sectionIds)[number]);
+}
 
 export function SiteHeader({
   bookingUrl,
@@ -29,8 +36,10 @@ export function SiteHeader({
   ctaLabel?: string;
 }) {
   const copy = useCopy();
+  const pathname = usePathname();
   const resolvedCta = ctaLabel ?? copy.nav.bookCta;
   const headerRef = useRef<HTMLElement>(null);
+  const headerHeightRef = useRef(112);
   const [headerHeight, setHeaderHeight] = useState(112);
   const [active, setActive] = useState("");
   const sections = sectionIds.map((id) => ({
@@ -40,68 +49,126 @@ export function SiteHeader({
         ? copy.nav.services
         : id === "calculator"
           ? copy.nav.calculator
-          : id === "proof"
-            ? copy.nav.proof
+          : id === "performance"
+            ? copy.nav.performance
             : copy.nav.partnership,
   }));
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const node = headerRef.current;
     if (!node) return;
 
-    const syncHeight = () => setHeaderHeight(node.offsetHeight);
+    const syncHeight = () => {
+      const height = node.offsetHeight;
+      headerHeightRef.current = height;
+      setHeaderHeight(height);
+      document.documentElement.style.setProperty(
+        "--header-offset",
+        `${height + HEADER_GAP}px`,
+      );
+    };
     syncHeight();
 
     const observer = new ResizeObserver(syncHeight);
     observer.observe(node);
-    return () => observer.disconnect();
+    return () => {
+      observer.disconnect();
+      document.documentElement.style.removeProperty("--header-offset");
+    };
   }, []);
 
   useEffect(() => {
-    if (!showSections) return;
+    const offset = () => headerHeightRef.current + HEADER_GAP;
 
-    let offsets: { id: string; top: number }[] = [];
-
-    const measure = () => {
-      offsets = sectionIds.flatMap((id) => {
-        const node = document.getElementById(id);
-        return node ? [{ id: id as string, top: node.offsetTop }] : [];
-      });
+    const scrollToId = (id: string, behavior: ScrollBehavior) => {
+      if (id === "top") {
+        window.scrollTo({ top: 0, behavior });
+        setActive("");
+        return true;
+      }
+      if (id === "estimate") {
+        return scrollToEstimate(behavior);
+      }
+      const node = document.getElementById(id);
+      if (!node) return false;
+      const rect = node.getBoundingClientRect();
+      const top = Math.max(0, window.scrollY + rect.top - offset());
+      window.scrollTo({ top, behavior });
+      if (isSectionId(id)) setActive(id);
+      return true;
     };
 
     const onScroll = () => {
-      const marker = window.scrollY + 160;
-      setActive(
-        offsets.reduce(
-          (found, entry) => (entry.top <= marker ? entry.id : found),
-          "",
-        ),
+      const marker = offset();
+      const current = sectionIds.reduce((found, id) => {
+        const node = document.getElementById(id);
+        if (!node) return found;
+        return node.getBoundingClientRect().top <= marker + 1 ? id : found;
+      }, "");
+      setActive(current);
+    };
+
+    const onClick = (event: MouseEvent) => {
+      if (
+        event.defaultPrevented ||
+        event.button !== 0 ||
+        event.metaKey ||
+        event.ctrlKey ||
+        event.shiftKey ||
+        event.altKey
+      ) {
+        return;
+      }
+      const anchor = (event.target as HTMLElement | null)?.closest("a");
+      if (!anchor) return;
+      const href = anchor.getAttribute("href");
+      if (!href) return;
+      const match = href.match(/^(?:\/)?#([A-Za-z0-9_-]+)$/);
+      if (!match) return;
+      const id = match[1];
+      if (!scrollToId(id, "smooth")) return;
+      event.preventDefault();
+      event.stopPropagation();
+      window.history.replaceState(
+        null,
+        "",
+        id === "top"
+          ? window.location.pathname === "/"
+            ? "/"
+            : window.location.pathname
+          : `${window.location.pathname}#${id}`,
       );
     };
 
-    const onResize = () => {
-      measure();
-      onScroll();
+    const onHash = () => {
+      const id = window.location.hash.replace(/^#/, "");
+      if (id) scrollToId(id, "auto");
     };
 
-    measure();
     onScroll();
+    const raf = requestAnimationFrame(onHash);
     window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onResize);
+    window.addEventListener("hashchange", onHash);
+    document.addEventListener("click", onClick, true);
 
     return () => {
+      cancelAnimationFrame(raf);
       window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onResize);
+      window.removeEventListener("hashchange", onHash);
+      document.removeEventListener("click", onClick, true);
     };
   }, [showSections]);
 
   const sectionLinks = (keyPrefix: string) =>
     sections.map((section) => {
-      const isActive = showSections && active === section.id;
+      const isPage = section.id === "calculator";
+      const isActive = isPage
+        ? pathname === "/calculator" || pathname.startsWith("/calculator/")
+        : showSections && active === section.id;
       return (
         <Link
           key={`${keyPrefix}-${section.id}`}
-          href={`/#${section.id}`}
+          href={isPage ? "/calculator" : `/#${section.id}`}
           aria-current={isActive ? "true" : undefined}
           className={`${navItem} ${
             isActive
@@ -136,14 +203,17 @@ export function SiteHeader({
 
         <div className="relative z-10 flex shrink-0 items-center gap-2 sm:gap-3">
           <Link
+            href="/about"
+            className="hidden px-2 text-[13px] text-[var(--muted)] transition-colors duration-300 hover:text-[var(--fg)] sm:inline"
+          >
+            {copy.nav.about}
+          </Link>
+          <Link
             href="/faq"
             className="hidden px-2 text-[13px] text-[var(--muted)] transition-colors duration-300 hover:text-[var(--fg)] sm:inline"
           >
             {copy.nav.faq}
           </Link>
-          <HelpTrigger className="hidden px-2 text-[13px] text-[var(--muted)] transition-colors duration-300 hover:text-[var(--fg)] sm:inline">
-            {copy.nav.help}
-          </HelpTrigger>
           <Link
             href={bookingUrl}
             className="group inline-flex min-h-10 shrink-0 touch-manipulation items-center gap-1.5 rounded-full bg-[var(--btn)] px-3.5 py-2 text-[13px] font-medium text-[var(--btn-fg)] transition-all duration-500 ease-out sm:px-4 [@media(hover:hover)]:hover:scale-[1.03] [@media(hover:hover)]:hover:shadow-lg"
@@ -171,12 +241,12 @@ export function SiteHeader({
           >
             <div className="flex w-max items-center gap-0.5 px-1.5 py-1">
               {sectionLinks("mobile")}
+              <Link href="/about" className={`${navItem} text-[var(--muted)]`}>
+                {copy.nav.about}
+              </Link>
               <Link href="/faq" className={`${navItem} text-[var(--muted)]`}>
                 {copy.nav.faq}
               </Link>
-              <HelpTrigger className={`${navItem} text-[var(--muted)]`}>
-                {copy.nav.help}
-              </HelpTrigger>
             </div>
           </nav>
         </div>

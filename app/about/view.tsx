@@ -31,7 +31,7 @@ export function AboutView() {
       <section className="mx-auto max-w-3xl px-4 pb-16 sm:px-6 sm:pb-24">
         <div className="grid gap-12 sm:grid-cols-2 sm:gap-16">
           <Reveal>
-            <p className="text-[11px] tracking-[0.14em] text-[#86868B] uppercase">
+            <p className="text-[13px] tracking-[-0.01em] text-[#86868B]">
               {copy.about.whoWeAre}
             </p>
             <p className="mt-4 text-[16px] leading-7 tracking-[0.01em] text-[var(--fg)]">
@@ -39,7 +39,7 @@ export function AboutView() {
             </p>
           </Reveal>
           <Reveal delay={0.08}>
-            <p className="text-[11px] tracking-[0.14em] text-[#86868B] uppercase">
+            <p className="text-[13px] tracking-[-0.01em] text-[#86868B]">
               {copy.about.started}
             </p>
             <p className="mt-4 text-[16px] leading-7 tracking-[0.01em] text-[var(--fg)]">
@@ -47,8 +47,8 @@ export function AboutView() {
             </p>
           </Reveal>
         </div>
-        <Reveal delay={0.1} className="mt-14 border-t border-black/[0.06] pt-12">
-          <p className="text-[11px] tracking-[0.14em] text-[#86868B] uppercase">
+        <Reveal delay={0.1} className="mt-14 pt-12">
+              <p className="text-[13px] tracking-[-0.01em] text-[#86868B]">
             {copy.about.mission}
           </p>
           <p className="mt-4 max-w-2xl text-[16px] leading-7 tracking-[0.01em] text-[var(--fg)]">
@@ -69,7 +69,7 @@ export function AboutView() {
           <Stagger className="mt-10" step={0.08}>
             {copy.about.principles.map((principle, index) => (
               <StaggerItem key={principle.title}>
-                <article className="grid gap-3 border-t border-black/[0.06] py-8 sm:grid-cols-[4.5rem_1fr] sm:gap-10">
+                <article className="grid gap-3 py-8 sm:grid-cols-[4.5rem_1fr] sm:gap-10">
                   <span className="text-[11px] tracking-[0.16em] text-[#86868B] tabular-nums">
                     {String(index + 1).padStart(2, "0")}
                   </span>
@@ -92,7 +92,7 @@ export function AboutView() {
         <div className="mx-auto max-w-3xl px-4 sm:px-6">
           <Reveal>
             <article className={`${glassCard} p-8 sm:p-12`}>
-              <p className="text-[11px] tracking-[0.14em] text-[#86868B] uppercase">
+              <p className="text-[13px] tracking-[-0.01em] text-[#86868B]">
                 {copy.about.who}
               </p>
               <h2 className="mt-4 max-w-sm text-[28px] leading-9 font-semibold tracking-[-0.03em]">
@@ -103,7 +103,7 @@ export function AboutView() {
                 {copy.about.criteria.map((item) => (
                   <li
                     key={item}
-                    className="border-t border-black/[0.06] pt-4 text-[15px] leading-7 text-[#86868B] first:border-t-0 first:pt-0"
+                    className="text-[15px] leading-7 text-[#86868B]"
                   >
                     {item}
                   </li>

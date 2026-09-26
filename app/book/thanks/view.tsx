@@ -33,13 +33,13 @@ export function ThanksView() {
         <div className="mx-auto max-w-3xl px-6">
           <Reveal>
             <article className={`${glassCard} p-8 sm:p-10`}>
-              <p className="text-[11px] tracking-[0.14em] text-[#86868B] uppercase">
+              <p className="text-[13px] tracking-[-0.01em] text-[#86868B]">
                 {copy.thanks.next}
               </p>
               <Stagger className="mt-8" step={0.08}>
                 {copy.thanks.steps.map((step, index) => (
                   <StaggerItem key={step.title}>
-                    <div className="grid grid-cols-[2.5rem_1fr] gap-4 border-t border-black/[0.06] py-6 first:border-t-0 first:pt-0 last:pb-0">
+                    <div className="grid grid-cols-[2.5rem_1fr] gap-4 py-6 first:pt-0 last:pb-0">
                       <span className="text-[11px] tracking-[0.16em] text-[#86868B] tabular-nums">
                         {String(index + 1).padStart(2, "0")}
                       </span>

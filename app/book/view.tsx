@@ -34,7 +34,7 @@ export function BookView() {
             <StaggerItem>
               <article className={`${glassCard} justify-between p-6 sm:p-10`}>
                 <div>
-                  <p className="text-[11px] tracking-[0.14em] text-[#86868B] uppercase">
+                  <p className="text-[13px] tracking-[-0.01em] text-[#86868B]">
                     {copy.book.call}
                   </p>
                   <h2 className="mt-4 text-[22px] leading-8 font-semibold tracking-[-0.025em]">
@@ -44,7 +44,7 @@ export function BookView() {
                     {copy.book.beats.map((beat, index) => (
                       <li
                         key={beat.title}
-                        className="grid grid-cols-[2.5rem_1fr] gap-4 border-t border-black/[0.06] pt-6 first:border-t-0 first:pt-0"
+                        className="grid grid-cols-[2.5rem_1fr] gap-4"
                       >
                         <span className="text-[11px] tracking-[0.16em] text-[#86868B] tabular-nums">
                           {String(index + 1).padStart(2, "0")}

@@ -8,10 +8,12 @@ export function PageShell({
   children,
   bookingUrl = "/book",
   ctaLabel,
+  footer = true,
 }: {
   children: ReactNode;
   bookingUrl?: string;
   ctaLabel?: string;
+  footer?: boolean;
 }) {
   return (
     <MotionRoot>
@@ -22,8 +24,10 @@ export function PageShell({
           showSections={false}
           ctaLabel={ctaLabel}
         />
-        <main className="max-w-[100vw] flex-1 overflow-x-clip">{children}</main>
-        <SiteFooter bookingUrl="/book" />
+        <main className="flex max-w-[100vw] flex-1 flex-col overflow-x-clip">
+          {children}
+        </main>
+        {footer ? <SiteFooter bookingUrl="/book" /> : null}
       </div>
     </MotionRoot>
   );

@@ -144,7 +144,7 @@ export function FloatingStat({
       animate={reduced || paused ? undefined : { y: [0, -8, 0] }}
       transition={{ duration: 9, repeat: Infinity, ease: "easeInOut" }}
     >
-      <p className="text-[11px] tracking-[0.12em] text-white/70 uppercase">
+      <p className="text-[13px] tracking-[-0.01em] text-white/70">
         {label}
       </p>
       <p className="mt-2 text-3xl font-semibold tracking-[-0.04em] text-white tabular-nums">

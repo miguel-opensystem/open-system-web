@@ -3,19 +3,44 @@
 import Link from "next/link";
 import { AnimatePresence, animate, motion, useReducedMotion } from "framer-motion";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import type { Messages } from "../_i18n/en";
 import { useCopy } from "../_i18n/provider";
+import {
+  SectionLabel,
+  darkCard,
+  ghostButton,
+  inverseButton,
+} from "./chrome";
 import { ArrowIcon, CheckIcon } from "./icons";
+import { AUDIENCE_INPUT_ID, ESTIMATE_ID } from "./estimate-scroll";
 import { LiveDot } from "./motion";
 
 const MIN_FOLLOWERS = 20_000;
 const MAX_FOLLOWERS = 1_000_000;
+const MIN_REVENUE = 0;
+const MAX_REVENUE = 100_000;
 const MAX_LIST = 1_000_000;
-const MAX_REVENUE = 1_000_000;
-const MIN_UNANSWERED = 0;
-const MAX_UNANSWERED = 100;
+const CAPTURE_RATE = 0.005;
+const FEED_CAPTURE_RATE = 0.002;
+const CAPTURE_VALUE = 30;
+const FOLLOWUP_RATE = 0.15;
+const RETENTION_RATE = 0.09;
+const INBOUND_RATE = 0.002;
+const INBOUND_VALUE = 20;
+const INBOUND_WEIGHT = 0.5;
 
-/** Silent baseline: 1% of uncaptured attention as a $20/mo relationship. */
-const OPPORTUNITY = 20;
+const QUESTION_COUNT = 8;
+const PROCESS_DURATION = 5.4;
+const EASE = [0.16, 1, 0.3, 1] as const;
+
+const platformIds = [
+  "instagram",
+  "tiktok",
+  "youtube",
+  "linkedin",
+] as const;
+
+export type PlatformId = (typeof platformIds)[number];
 
 const streamIds = [
   "none",
@@ -25,37 +50,74 @@ const streamIds = [
   "coaching",
 ] as const;
 
-type StreamId = (typeof streamIds)[number];
+export type StreamId = (typeof streamIds)[number];
 
 const landingIds = ["feed", "bio", "owned"] as const;
 
-type LandingId = (typeof landingIds)[number];
+export type LandingId = (typeof landingIds)[number];
 
-const followupIds = ["manual", "mixed", "automated"] as const;
+const automationIds = ["automated", "bio", "manual", "nothing"] as const;
 
-type FollowupId = (typeof followupIds)[number];
+export type AutomationId = (typeof automationIds)[number];
 
-const LANDING_RATE: Record<LandingId, number> = {
-  feed: 0.012,
-  bio: 0.009,
-  owned: 0.006,
+const retentionIds = ["recovered", "untracked"] as const;
+
+export type RetentionId = (typeof retentionIds)[number];
+
+export type LeakInputs = {
+  audience: number;
+  list: number;
+  revenue: number;
+  landing: LandingId | null;
+  automation: AutomationId | null;
+  retention: RetentionId | null;
 };
 
-const OPS_RATE: Record<FollowupId, number> = {
-  manual: 0.22,
-  mixed: 0.15,
-  automated: 0.08,
+export type LeakResult = {
+  capture: number;
+  followup: number;
+  retention: number;
+  total: number;
+  annual: number;
+  uncaptured: number;
+  scale: number;
 };
 
-const INBOUND_WEIGHT: Record<FollowupId, number> = {
-  manual: 1,
-  mixed: 0.7,
-  automated: 0.35,
-};
+function fill(template: string, vars: Record<string, string>) {
+  return template.replace(/\{(\w+)\}/g, (_, key: string) => vars[key] ?? `{${key}}`);
+}
 
-const PROCESS_DURATION = 5.4;
+/** Localized diagnostic: three leaks from capture path, inbound handling, and retention hygiene. */
+export function calculateLeaks(input: LeakInputs): LeakResult {
+  const uncaptured = Math.max(0, input.audience - input.list);
+  const capture =
+    input.automation === "bio" || input.automation === "nothing"
+      ? uncaptured * CAPTURE_RATE * CAPTURE_VALUE
+      : input.landing === "feed"
+        ? uncaptured * FEED_CAPTURE_RATE * CAPTURE_VALUE
+        : 0;
+  const followupGated =
+    input.automation === "manual" || input.automation === "nothing";
+  const followup = followupGated
+    ? input.revenue > 0
+      ? input.revenue * FOLLOWUP_RATE
+      : input.audience * INBOUND_RATE * INBOUND_VALUE * INBOUND_WEIGHT
+    : 0;
+  const retention =
+    input.retention === "untracked" ? input.revenue * RETENTION_RATE : 0;
+  const total = capture + followup + retention;
 
-/** Keeps moving through checkpoints — slows slightly, never stops. */
+  return {
+    capture,
+    followup,
+    retention,
+    total,
+    annual: total * 12,
+    uncaptured,
+    scale: Math.max(total, input.revenue, 1),
+  };
+}
+
 function easeThroughCheckpoints(t: number) {
   const dips = 4;
   const depth = 0.22;
@@ -116,21 +178,23 @@ function ProcessingPanel({
 
   return (
     <motion.div
-      key="processing"
-      className="relative flex h-full flex-col"
+      className="mx-auto w-full max-w-xl text-center"
       initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -8 }}
-      transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+      transition={{ duration: 0.45, ease: EASE }}
     >
-      <p className="text-[11px] tracking-[0.14em] text-white/40 uppercase">
+      <p className="flex items-center justify-center gap-2 text-[13px] tracking-[-0.01em] text-[#86868B]">
+        <LiveDot color="#0A84FF" />
         {analyzing}
       </p>
-      <p className="mt-3 text-[18px] font-semibold tracking-[-0.03em]">
+      <p className="mt-4 text-[1.75rem] leading-[1.12] font-semibold tracking-[-0.04em] text-balance sm:text-[2.5rem]">
         {title}
       </p>
-      <p className="mt-1.5 text-[13px] leading-5 text-white/45">{body}</p>
-      <ul className="mt-6 grid grid-cols-2 gap-x-4 gap-y-3">
+      <p className="mx-auto mt-3 max-w-sm text-[15px] leading-6 text-[#86868B]">
+        {body}
+      </p>
+      <ul className="mt-10 grid grid-cols-1 gap-x-8 gap-y-4 text-left sm:grid-cols-2">
         {steps.map((step, index) => {
           const done = index < processStep;
           const active = index === processStep;
@@ -138,16 +202,16 @@ function ProcessingPanel({
             <li key={step} className="flex items-center gap-2.5">
               <span className="grid size-5 shrink-0 place-items-center">
                 {done ? (
-                  <CheckIcon className="size-3.5 text-[#5AC8FA]" />
+                  <CheckIcon className="size-3.5 text-[#0A84FF]" />
                 ) : active ? (
                   <LiveDot color="#0A84FF" />
                 ) : (
-                  <span className="size-1.5 rounded-full bg-white/15" />
+                  <span className="size-1.5 rounded-full bg-black/15" />
                 )}
               </span>
               <span
-                className={`text-[13px] tracking-[-0.01em] ${
-                  done || active ? "text-white/80" : "text-white/25"
+                className={`text-[15px] tracking-[-0.01em] ${
+                  done || active ? "text-[#050505]" : "text-[#86868B]"
                 }`}
               >
                 {step}
@@ -156,14 +220,12 @@ function ProcessingPanel({
           );
         })}
       </ul>
-      <div className="mt-auto pt-6">
-        <div className="h-px w-full overflow-hidden bg-white/10">
-          <div
-            ref={barRef}
-            className="h-full origin-left bg-gradient-to-r from-[#0A84FF] to-[#5AC8FA]"
-            style={{ transform: "scaleX(0)" }}
-          />
-        </div>
+      <div className="mt-12 h-px w-full overflow-hidden bg-black/[0.08]">
+        <div
+          ref={barRef}
+          className="h-full origin-left bg-gradient-to-r from-[#0A84FF] to-[#5AC8FA]"
+          style={{ transform: "scaleX(0)" }}
+        />
       </div>
     </motion.div>
   );
@@ -192,6 +254,329 @@ function AnimatedNumber({
   return <>{format(display)}</>;
 }
 
+function NumberField({
+  value,
+  onChange,
+  max,
+  prefix,
+  suffix,
+  placeholder,
+  label,
+  onSubmit,
+}: {
+  value: number | null;
+  onChange: (next: number | null) => void;
+  max: number;
+  prefix?: string;
+  suffix?: string;
+  placeholder: string;
+  label: string;
+  onSubmit?: () => void;
+}) {
+  return (
+    <div className="flex items-center gap-2 rounded-2xl border border-[color:var(--input-border)] bg-[var(--chip)] px-3.5 py-2.5 backdrop-blur-xl transition-all duration-300 ease-out focus-within:border-black/25 focus-within:shadow-md">
+      {prefix ? (
+        <span className="text-[17px] text-[var(--muted)] select-none">{prefix}</span>
+      ) : null}
+      <input
+        type="text"
+        inputMode="numeric"
+        aria-label={label}
+        value={value === null ? "" : value.toLocaleString("en-US")}
+        placeholder={placeholder}
+        onChange={(event) => {
+          const digits = event.target.value.replace(/[^0-9]/g, "");
+          if (digits === "") {
+            onChange(null);
+            return;
+          }
+          onChange(Math.min(Number(digits), max));
+        }}
+        onKeyDown={(event) => {
+          if (event.key === "Enter") onSubmit?.();
+        }}
+        className="w-full bg-transparent text-[16px] font-medium tracking-[-0.01em] tabular-nums outline-none placeholder:font-normal placeholder:text-[#C0C0C6] sm:text-[15px]"
+      />
+      {suffix ? (
+        <span className="shrink-0 text-[13px] text-[#86868B] select-none">
+          {suffix}
+        </span>
+      ) : null}
+    </div>
+  );
+}
+
+function ResultScreen({
+  copy,
+  result,
+  revenue,
+  stream,
+  list,
+  followers,
+  platformLabel,
+  offerLabel,
+  landingLabel,
+  automation,
+  landing,
+  money,
+  numbers,
+}: {
+  copy: Messages["calc"];
+  result: LeakResult;
+  revenue: number;
+  stream: StreamId;
+  list: number;
+  followers: number;
+  platformLabel: string;
+  offerLabel: string;
+  landingLabel: string;
+  automation: AutomationId | null;
+  landing: LandingId | null;
+  money: Intl.NumberFormat;
+  numbers: Intl.NumberFormat;
+}) {
+  const dollars = (amount: number) => money.format(Math.round(amount));
+  const vars = {
+    amount: dollars(result.capture),
+    platform: platformLabel,
+    audience: numbers.format(followers),
+    uncaptured: numbers.format(result.uncaptured),
+    revenue: dollars(revenue),
+    list: numbers.format(list),
+  };
+
+  const rows = [
+    {
+      id: "capture",
+      label: "01",
+      title: copy.leakFront,
+      amount: result.capture,
+      body:
+        result.capture > 0
+          ? fill(copy.lost.capture, { ...vars, amount: dollars(result.capture) })
+          : copy.clear.capture,
+      fix: result.capture > 0 ? copy.lost.captureFix : copy.clear.captureFix,
+    },
+    {
+      id: "followup",
+      label: "02",
+      title: copy.leakOps,
+      amount: result.followup,
+      body:
+        result.followup > 0
+          ? fill(revenue > 0 ? copy.lost.followup : copy.lost.followupZero, {
+              ...vars,
+              amount: dollars(result.followup),
+            })
+          : copy.clear.followup,
+      fix: result.followup > 0 ? copy.lost.followupFix : copy.clear.followupFix,
+    },
+    {
+      id: "retention",
+      label: "03",
+      title: copy.leakRetention,
+      amount: result.retention,
+      body:
+        result.retention > 0
+          ? fill(copy.lost.retention, {
+              ...vars,
+              amount: dollars(result.retention),
+            })
+          : copy.clear.retention,
+      fix: result.retention > 0 ? copy.lost.retentionFix : copy.clear.retentionFix,
+    },
+  ] as const;
+
+  const findings: string[] = [];
+  if (followers > 0 && list / followers < 0.1) findings.push(copy.findings.lowOwned);
+  else if (result.uncaptured > 0) findings.push(copy.findings.listGap);
+  if (landing === "feed") findings.push(copy.findings.feedDeath);
+  if (automation === "bio") findings.push(copy.findings.bioOnly);
+  if (result.followup > 0) findings.push(copy.findings.timeBound);
+  if (result.retention > 0) findings.push(copy.findings.untracked);
+  if (stream === "none") findings.push(copy.findings.noOffer);
+  if (stream === "brand") findings.push(copy.findings.brandReset);
+
+  const shownFindings = findings.slice(0, 4);
+
+  return (
+    <motion.div
+      className="mx-auto w-full max-w-6xl"
+      initial={{ opacity: 0, y: 16 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -8 }}
+      transition={{ duration: 0.7, ease: EASE }}
+    >
+      <div className="grid items-end gap-10 lg:grid-cols-12 lg:gap-16">
+        <div className="lg:col-span-6">
+          <SectionLabel align="start">{copy.reportLabel}</SectionLabel>
+          <h2 className="mt-6 text-[1.75rem] leading-[1.12] font-semibold tracking-[-0.04em] text-balance text-[#050505] sm:text-[2.5rem] lg:text-[2.75rem] lg:leading-[1.08]">
+            {copy.verdict[stream]}
+          </h2>
+          <p className="mt-5 text-[15px] leading-7 text-[#86868B]">
+            {platformLabel} · {offerLabel} · {landingLabel}
+            <br />
+            <span className="tabular-nums text-[#050505]">{numbers.format(list)}</span>{" "}
+            {copy.canReach}{" "}
+            <span className="tabular-nums text-[#050505]">
+              {numbers.format(followers)}
+            </span>
+            .
+          </p>
+        </div>
+        <div className="lg:col-span-6 lg:text-right">
+          <p className="text-[13px] tracking-[-0.01em] text-[#86868B]">
+            {copy.leakLabel}
+          </p>
+          <p className="mt-3 text-[2.75rem] leading-none font-semibold tracking-[-0.055em] text-[#050505] tabular-nums sm:text-[4.25rem]">
+            <AnimatedNumber
+              value={result.total}
+              format={(n) => money.format(Math.round(n))}
+            />
+          </p>
+          <p className="mt-4 text-[15px] leading-7 text-[#86868B]">
+            <span className="font-medium text-[#0A84FF] tabular-nums">
+              <AnimatedNumber
+                value={result.annual}
+                format={(n) => money.format(Math.round(n))}
+              />
+            </span>{" "}
+            {copy.aYear}
+          </p>
+        </div>
+      </div>
+
+      <div className="mt-12 grid gap-6 sm:mt-14 sm:grid-cols-2">
+        <div>
+          <div className="flex items-baseline justify-between gap-3 text-[13px]">
+            <span className="text-[#86868B]">{copy.today}</span>
+            <span className="font-medium text-[#050505] tabular-nums">
+              <AnimatedNumber
+                value={revenue}
+                format={(n) => money.format(Math.round(n))}
+              />
+            </span>
+          </div>
+          <div className="mt-1.5 h-1.5 w-full overflow-hidden rounded-full bg-black/[0.06]">
+            <motion.div
+              className="h-full rounded-full bg-black/25"
+              animate={{
+                width: `${Math.max((revenue / result.scale) * 100, 1.5)}%`,
+              }}
+              transition={{ duration: 0.9, ease: EASE }}
+            />
+          </div>
+        </div>
+        <div>
+          <div className="flex items-baseline justify-between gap-3 text-[13px]">
+            <span className="text-[#86868B]">{copy.uncapturedBar}</span>
+            <span className="font-medium text-[#0A84FF] tabular-nums">
+              <AnimatedNumber
+                value={result.total}
+                format={(n) => money.format(Math.round(n))}
+              />
+            </span>
+          </div>
+          <div className="mt-1.5 h-1.5 w-full overflow-hidden rounded-full bg-black/[0.06]">
+            <motion.div
+              className="h-full rounded-full bg-gradient-to-r from-[#0A84FF] to-[#5AC8FA]"
+              initial={{ width: 0 }}
+              animate={{
+                width: `${Math.max((result.total / result.scale) * 100, 1.5)}%`,
+              }}
+              transition={{ duration: 1, ease: EASE }}
+            />
+          </div>
+        </div>
+      </div>
+
+      <div className="mt-10 grid gap-4 sm:mt-12 sm:gap-5">
+        {rows.map((row) => (
+          <article
+            key={row.id}
+            className="gpu relative overflow-hidden rounded-3xl border border-[color:var(--card-border)] bg-[var(--card)] p-6 shadow-[0_8px_30px_rgba(0,0,0,0.04)] backdrop-blur-2xl sm:p-8"
+          >
+            <div className="flex items-start justify-between gap-4">
+              <div>
+                <p className="text-[13px] tracking-[0.16em] text-[#0A84FF] tabular-nums">
+                  {row.label}
+                </p>
+                <h3 className="mt-3 text-[1.35rem] leading-7 font-semibold tracking-[-0.03em] text-[#050505] sm:text-[1.5rem]">
+                  {row.title}
+                </h3>
+              </div>
+              <p
+                className={`text-[1.5rem] leading-none font-semibold tracking-[-0.04em] tabular-nums sm:text-[1.85rem] ${
+                  row.amount > 0 ? "text-[#0A84FF]" : "text-[#86868B]"
+                }`}
+              >
+                <AnimatedNumber
+                  value={row.amount}
+                  format={(n) => money.format(Math.round(n))}
+                />
+              </p>
+            </div>
+            <p className="mt-4 text-[15px] leading-7 text-zinc-700 sm:text-[16px] sm:leading-8">
+              {row.body}
+            </p>
+            <p className="mt-4 text-[15px] leading-7 text-[#86868B]">
+              <span className="font-medium text-[#050505]">{copy.installLabel}:</span>{" "}
+              {row.fix}
+            </p>
+          </article>
+        ))}
+      </div>
+
+      {shownFindings.length > 0 ? (
+        <div className="mt-10 sm:mt-12">
+          <p className="text-[13px] tracking-[-0.01em] text-[#86868B]">
+            {copy.findingsTitle}
+          </p>
+          <ul className="mt-5 grid gap-3 sm:grid-cols-2">
+            {shownFindings.map((finding) => (
+              <li
+                key={finding}
+                className="flex items-start gap-3 text-[15px] leading-7 text-zinc-700"
+              >
+                <span
+                  className="mt-2 size-1.5 shrink-0 rounded-full bg-[#0A84FF]"
+                  aria-hidden="true"
+                />
+                {finding}
+              </li>
+            ))}
+          </ul>
+        </div>
+      ) : null}
+
+      <div
+        className={`${darkCard} mt-12 items-start p-6 sm:mt-16 sm:p-10 lg:flex-row lg:items-end lg:justify-between lg:gap-16 lg:p-12`}
+      >
+        <div className="max-w-xl">
+          <h3 className="text-[1.65rem] leading-[1.12] font-semibold tracking-[-0.04em] sm:text-[2.15rem]">
+            {copy.gapTitle}
+          </h3>
+          <p className="mt-4 text-[15px] leading-7 text-white/60 sm:text-[16px] sm:leading-8">
+            {copy.gapBody}
+          </p>
+        </div>
+        <div className="mt-8 flex w-full shrink-0 flex-col gap-3 sm:flex-row lg:mt-0 lg:w-auto">
+          <Link href="/book" className={`${inverseButton} w-full sm:w-auto`}>
+            {copy.plugCta}
+            <ArrowIcon className="size-4 shrink-0 transition-transform duration-500 ease-out group-hover:translate-x-1" />
+          </Link>
+          <Link
+            href="/"
+            className={`${ghostButton} w-full border-white/15 bg-white/[0.06] text-white sm:w-auto`}
+          >
+            {copy.homeCta}
+          </Link>
+        </div>
+      </div>
+    </motion.div>
+  );
+}
+
 function Question({
   prompt,
   hint,
@@ -202,10 +587,16 @@ function Question({
   children: React.ReactNode;
 }) {
   return (
-    <div>
-      <p className="text-[14px] font-medium tracking-[-0.01em]">{prompt}</p>
-      {hint && <p className="mt-1 text-[12px] leading-5 text-[#86868B]">{hint}</p>}
-      <div className="mt-2.5">{children}</div>
+    <div className="mx-auto w-full max-w-xl text-center">
+      <h2 className="text-[1.75rem] leading-[1.12] font-semibold tracking-[-0.04em] text-balance sm:text-[2.5rem]">
+        {prompt}
+      </h2>
+      {hint ? (
+        <p className="mx-auto mt-4 max-w-md text-[16px] leading-7 tracking-[0.01em] text-[#86868B]">
+          {hint}
+        </p>
+      ) : null}
+      <div className="mt-8">{children}</div>
     </div>
   );
 }
@@ -224,7 +615,7 @@ function Choice({
       type="button"
       onClick={onSelect}
       aria-pressed={selected}
-      className={`rounded-full px-3.5 py-1.5 text-[13px] transition-all duration-300 ease-out ${
+      className={`w-full rounded-full px-4 py-2.5 text-[15px] font-medium transition-all duration-300 ease-out ${
         selected
           ? "bg-[var(--btn)] text-[var(--btn-fg)] shadow-[0_6px_20px_-8px_rgba(0,0,0,0.6)]"
           : "border border-[color:var(--input-border)] bg-[var(--chip)] text-[var(--muted)] backdrop-blur-xl hover:scale-[1.03] hover:text-[var(--fg)] hover:shadow-md"
@@ -235,46 +626,36 @@ function Choice({
   );
 }
 
-function NumberField({
-  value,
-  onChange,
-  max,
-  prefix,
-  suffix,
-  placeholder,
-  label,
+function OptionRow({
+  selected,
+  onSelect,
+  children,
 }: {
-  value: number;
-  onChange: (next: number) => void;
-  max: number;
-  prefix?: string;
-  suffix?: string;
-  placeholder: string;
-  label: string;
+  selected: boolean;
+  onSelect: () => void;
+  children: React.ReactNode;
 }) {
   return (
-    <div className="flex items-center gap-2 rounded-2xl border border-[color:var(--input-border)] bg-[var(--chip)] px-3.5 py-2.5 backdrop-blur-xl transition-all duration-300 ease-out focus-within:border-black/25 focus-within:shadow-md">
-      {prefix && (
-        <span className="text-[17px] text-[var(--muted)] select-none">{prefix}</span>
-      )}
-      <input
-        type="text"
-        inputMode="numeric"
-        aria-label={label}
-        value={value === 0 ? "" : value.toLocaleString("en-US")}
-        placeholder={placeholder}
-        onChange={(event) => {
-          const digits = event.target.value.replace(/[^0-9]/g, "");
-          onChange(Math.min(Number(digits || 0), max));
-        }}
-        className="w-full bg-transparent text-[16px] font-medium tracking-[-0.01em] tabular-nums outline-none placeholder:font-normal placeholder:text-[#C0C0C6] sm:text-[15px]"
-      />
-      {suffix && (
-        <span className="shrink-0 text-[13px] text-[#86868B] select-none">
-          {suffix}
-        </span>
-      )}
-    </div>
+    <button
+      type="button"
+      onClick={onSelect}
+      aria-pressed={selected}
+      className={`flex w-full items-center gap-3 rounded-2xl border px-4 py-3.5 text-left text-[15px] font-medium transition-all duration-300 ease-out ${
+        selected
+          ? "border-[#050505] bg-[#050505] text-white shadow-[0_8px_24px_-12px_rgba(0,0,0,0.55)]"
+          : "border-[color:var(--input-border)] bg-[var(--chip)] text-[#050505] backdrop-blur-xl hover:border-black/20 hover:shadow-md"
+      }`}
+    >
+      <span
+        className={`grid size-4 shrink-0 place-items-center rounded-full border ${
+          selected ? "border-white" : "border-black/25"
+        }`}
+        aria-hidden="true"
+      >
+        {selected ? <span className="size-2 rounded-full bg-white" /> : null}
+      </span>
+      {children}
+    </button>
   );
 }
 
@@ -282,14 +663,24 @@ export function Calculator() {
   const copy = useCopy();
   const reduced = useReducedMotion();
   const [followers, setFollowers] = useState(100_000);
-  const [list, setList] = useState(5_000);
   const [revenue, setRevenue] = useState(0);
-  const [stream, setStream] = useState<StreamId>("none");
-  const [landing, setLanding] = useState<LandingId>("feed");
-  const [unanswered, setUnanswered] = useState(60);
-  const [followup, setFollowup] = useState<FollowupId>("manual");
+  const [list, setList] = useState<number | null>(null);
+  const [stream, setStream] = useState<StreamId | null>(null);
+  const [platform, setPlatform] = useState<PlatformId | null>(null);
+  const [landing, setLanding] = useState<LandingId | null>(null);
+  const [automation, setAutomation] = useState<AutomationId | null>(null);
+  const [retention, setRetention] = useState<RetentionId | null>(null);
+  const [step, setStep] = useState(0);
+  const [direction, setDirection] = useState(1);
   const [phase, setPhase] = useState<"idle" | "processing" | "done">("idle");
+  const [attempted, setAttempted] = useState(false);
+  const stepRootRef = useRef<HTMLDivElement>(null);
   const finishProcessing = useCallback(() => setPhase("done"), []);
+
+  useEffect(() => {
+    if (phase !== "idle") return;
+    stepRootRef.current?.focus({ preventScroll: true });
+  }, [step, phase]);
 
   const money = useMemo(
     () =>
@@ -310,45 +701,28 @@ export function Calculator() {
     [],
   );
 
-  const numbers = useMemo(
-    () => new Intl.NumberFormat("en-US"),
-    [],
+  const numbers = useMemo(() => new Intl.NumberFormat("en-US"), []);
+
+  const result = useMemo(
+    () =>
+      calculateLeaks({
+        audience: followers,
+        list: list ?? 0,
+        revenue,
+        landing,
+        automation,
+        retention,
+      }),
+    [followers, list, revenue, landing, automation, retention],
   );
-
-  const result = useMemo(() => {
-    const uncapturedAudience = Math.max(0, followers - list);
-    const front = uncapturedAudience * LANDING_RATE[landing] * OPPORTUNITY;
-
-    const inbound = followers * 0.002;
-    const unansweredValue =
-      inbound * (unanswered / 100) * OPPORTUNITY * INBOUND_WEIGHT[followup];
-    const ops = revenue * OPS_RATE[followup] + unansweredValue;
-
-    const reachDecay = uncapturedAudience * 0.004 * OPPORTUNITY;
-    const revenueChurn = revenue * 0.08;
-    const retention = reachDecay + revenueChurn;
-
-    const total = front + ops + retention;
-    const annual = total * 12;
-    const scale = Math.max(total, revenue, 1);
-
-    return {
-      front,
-      ops,
-      retention,
-      total,
-      annual,
-      scale,
-    };
-  }, [followers, list, revenue, landing, unanswered, followup]);
 
   const audienceProgress =
     ((followers - MIN_FOLLOWERS) / (MAX_FOLLOWERS - MIN_FOLLOWERS)) * 100;
-  const unansweredProgress =
-    ((unanswered - MIN_UNANSWERED) / (MAX_UNANSWERED - MIN_UNANSWERED)) * 100;
+  const revenueProgress =
+    ((revenue - MIN_REVENUE) / (MAX_REVENUE - MIN_REVENUE)) * 100;
 
   function startCalculation() {
-    if (phase !== "idle") return;
+    if (phase === "processing") return;
     if (reduced) {
       setPhase("done");
       return;
@@ -356,327 +730,370 @@ export function Calculator() {
     setPhase("processing");
   }
 
-  const statusLabel =
-    phase === "done"
-      ? copy.calc.live
-      : phase === "processing"
-        ? copy.calc.analyzing
-        : copy.calc.ready;
+  function isQuestionAnswered(index: number) {
+    switch (index) {
+      case 0:
+      case 1:
+        return true;
+      case 2:
+        return list !== null;
+      case 3:
+        return stream !== null;
+      case 4:
+        return platform !== null;
+      case 5:
+        return landing !== null;
+      case 6:
+        return automation !== null;
+      case 7:
+        return retention !== null;
+      default:
+        return false;
+    }
+  }
+
+  function goTo(next: number) {
+    setAttempted(false);
+    setDirection(next > step ? 1 : -1);
+    setStep(next);
+  }
+
+  function goNext() {
+    if (!isQuestionAnswered(step)) {
+      setAttempted(true);
+      return;
+    }
+    setAttempted(false);
+    if (step < QUESTION_COUNT - 1) {
+      goTo(step + 1);
+      return;
+    }
+    startCalculation();
+  }
+
+  function goBack() {
+    if (step === 0) return;
+    goTo(step - 1);
+  }
+
+  const lastQuestion = step === QUESTION_COUNT - 1;
+  const slideOffset = reduced ? 0 : 28;
+  const questionReady = isQuestionAnswered(step);
+  const needCopy = step === 2 ? copy.calc.needNumber : copy.calc.needChoice;
+
+  const questions = [
+    <Question
+      key="q1"
+      prompt={copy.calc.q1}
+      hint={copy.calc.q1hint}
+    >
+      <div className="flex w-full items-center gap-4">
+        <p className="w-[4.5rem] shrink-0 text-left text-[1.65rem] font-semibold tracking-[-0.045em] tabular-nums sm:w-24 sm:text-3xl">
+          {followers >= MAX_FOLLOWERS ? "1M+" : compact.format(followers)}
+        </p>
+        <div className="min-w-0 flex-1">
+          <input
+            id={AUDIENCE_INPUT_ID}
+            type="range"
+            min={MIN_FOLLOWERS}
+            max={MAX_FOLLOWERS}
+            step={5_000}
+            value={followers}
+            onChange={(event) => setFollowers(Number(event.target.value))}
+            aria-label={copy.calc.followers}
+            aria-valuetext={`${numbers.format(followers)} ${copy.calc.followersValue}`}
+            className="range-slider"
+            style={{
+              background: `linear-gradient(to right, #050505 ${audienceProgress}%, rgba(5,5,5,0.10) ${audienceProgress}%)`,
+            }}
+          />
+          <div className="mt-1.5 flex justify-between text-[11px] text-[#86868B] tabular-nums">
+            <span>20K</span>
+            <span>1M+</span>
+          </div>
+        </div>
+      </div>
+    </Question>,
+    <Question
+      key="q2"
+      prompt={copy.calc.q2}
+      hint={copy.calc.q2hint}
+    >
+      <div className="flex w-full items-center gap-4">
+        <p className="w-[5.25rem] shrink-0 text-left text-[1.45rem] font-semibold tracking-[-0.045em] tabular-nums sm:w-28 sm:text-3xl">
+          {revenue >= MAX_REVENUE ? "$100k+" : money.format(revenue)}
+        </p>
+        <div className="min-w-0 flex-1">
+          <input
+            type="range"
+            min={MIN_REVENUE}
+            max={MAX_REVENUE}
+            step={500}
+            value={revenue}
+            onChange={(event) => setRevenue(Number(event.target.value))}
+            aria-label={copy.calc.revenueLabel}
+            aria-valuetext={money.format(revenue)}
+            className="range-slider"
+            style={{
+              background: `linear-gradient(to right, #050505 ${revenueProgress}%, rgba(5,5,5,0.10) ${revenueProgress}%)`,
+            }}
+          />
+          <div className="mt-1.5 flex justify-between text-[11px] text-[#86868B] tabular-nums">
+            <span>$0</span>
+            <span>$100k+</span>
+          </div>
+        </div>
+      </div>
+    </Question>,
+    <Question
+      key="q3"
+      prompt={copy.calc.q3}
+      hint={copy.calc.q3hint}
+    >
+      <NumberField
+        value={list}
+        onChange={(next) => {
+          setList(next);
+          setAttempted(false);
+        }}
+        max={MAX_LIST}
+        suffix={copy.calc.contacts}
+        placeholder="5,000"
+        label={copy.calc.listLabel}
+        onSubmit={goNext}
+      />
+    </Question>,
+    <Question
+      key="q4"
+      prompt={copy.calc.q4}
+      hint={copy.calc.q4hint}
+    >
+      <div className="flex flex-wrap justify-center gap-2">
+        {streamIds.map((id) => (
+          <div key={id} className="min-w-[9.5rem] flex-1 sm:min-w-[10.5rem]">
+            <Choice
+              selected={stream === id}
+              onSelect={() => {
+                setStream(id);
+                setAttempted(false);
+              }}
+            >
+              {copy.calc.delivery[id]}
+            </Choice>
+          </div>
+        ))}
+      </div>
+    </Question>,
+    <Question
+      key="q5"
+      prompt={copy.calc.q5}
+      hint={copy.calc.q5hint}
+    >
+      <div className="grid grid-cols-2 gap-2">
+        {platformIds.map((id) => (
+          <Choice
+            key={id}
+            selected={platform === id}
+            onSelect={() => {
+              setPlatform(id);
+              setAttempted(false);
+            }}
+          >
+            {copy.calc.platform[id]}
+          </Choice>
+        ))}
+      </div>
+    </Question>,
+    <Question
+      key="q6"
+      prompt={copy.calc.q6}
+      hint={copy.calc.q6hint}
+    >
+      <div className="grid gap-2">
+        {landingIds.map((id) => (
+          <OptionRow
+            key={id}
+            selected={landing === id}
+            onSelect={() => {
+              setLanding(id);
+              setAttempted(false);
+            }}
+          >
+            {copy.calc.landing[id]}
+          </OptionRow>
+        ))}
+      </div>
+    </Question>,
+    <Question
+      key="q7"
+      prompt={copy.calc.q7}
+      hint={copy.calc.q7hint}
+    >
+      <div className="grid gap-2">
+        {automationIds.map((id) => (
+          <OptionRow
+            key={id}
+            selected={automation === id}
+            onSelect={() => {
+              setAutomation(id);
+              setAttempted(false);
+            }}
+          >
+            {copy.calc.automation[id]}
+          </OptionRow>
+        ))}
+      </div>
+    </Question>,
+    <Question
+      key="q8"
+      prompt={copy.calc.q8}
+      hint={copy.calc.q8hint}
+    >
+      <div className="grid gap-2">
+        {retentionIds.map((id) => (
+          <OptionRow
+            key={id}
+            selected={retention === id}
+            onSelect={() => {
+              setRetention(id);
+              setAttempted(false);
+            }}
+          >
+            {copy.calc.retentionStatus[id]}
+          </OptionRow>
+        ))}
+      </div>
+    </Question>,
+  ];
 
   return (
-    <div className="gpu w-full max-w-full overflow-hidden rounded-[1.5rem] border border-[color:var(--card-border)] bg-[var(--card)] shadow-[0_30px_90px_-45px_rgba(0,0,0,0.4)] backdrop-blur-2xl sm:rounded-[2rem]">
-      <div className="flex items-center justify-between border-b border-[color:var(--card-border)] px-4 py-3 sm:px-7">
-        <p className="text-[13px] font-medium tracking-[-0.01em]">
-          {copy.calc.title}
-        </p>
-        <span className="flex items-center gap-2 rounded-full border border-[color:var(--chip-border)] bg-[var(--chip)] px-3 py-1 backdrop-blur-xl">
-          <LiveDot color="#0A84FF" />
-          <span className="text-[11px] tracking-[0.1em] text-[var(--muted)] uppercase">
-            {statusLabel}
-          </span>
-        </span>
+    <div
+      id={ESTIMATE_ID}
+      className="flex min-h-[calc(100dvh-var(--header-offset,7.5rem))] w-full max-w-full flex-1 flex-col font-sans"
+    >
+      <div
+        className="h-1 w-full bg-black/[0.06]"
+        role="progressbar"
+        aria-valuemin={1}
+        aria-valuemax={QUESTION_COUNT}
+        aria-valuenow={phase === "idle" ? step + 1 : QUESTION_COUNT}
+        aria-label={copy.calc.progressLabel}
+      >
+        <div
+          className="h-full bg-[#0A84FF] transition-[width] duration-500 ease-out"
+          style={{
+            width: `${((phase === "idle" ? step + 1 : QUESTION_COUNT) / QUESTION_COUNT) * 100}%`,
+          }}
+        />
       </div>
 
-      <div className="grid gap-5 p-4 sm:p-7 lg:grid-cols-[1.15fr_0.95fr] lg:gap-8">
-        <div className="flex flex-col gap-5">
-          <Question prompt={copy.calc.q1}>
-            <div className="flex items-center gap-4">
-              <p className="w-[4.5rem] shrink-0 text-[1.65rem] font-semibold tracking-[-0.045em] tabular-nums sm:w-24 sm:text-3xl">
-                {compact.format(followers)}
-              </p>
-              <div className="min-w-0 flex-1">
-                <input
-                  type="range"
-                  min={MIN_FOLLOWERS}
-                  max={MAX_FOLLOWERS}
-                  step={5_000}
-                  value={followers}
-                  onChange={(event) => setFollowers(Number(event.target.value))}
-                  aria-label={copy.calc.followers}
-                  aria-valuetext={`${numbers.format(followers)} ${copy.calc.followersValue}`}
-                  className="range-slider"
-                  style={{
-                    background: `linear-gradient(to right, #050505 ${audienceProgress}%, rgba(5,5,5,0.10) ${audienceProgress}%)`,
-                  }}
-                />
-                <div className="mt-1.5 flex justify-between text-[11px] text-[#86868B] tabular-nums">
-                  <span>20K</span>
-                  <span>1M+</span>
-                </div>
-              </div>
-            </div>
-          </Question>
-
-          <div className="grid gap-4 sm:grid-cols-2">
-            <Question prompt={copy.calc.q2} hint={copy.calc.q2hint}>
-              <NumberField
-                value={revenue}
-                onChange={setRevenue}
-                max={MAX_REVENUE}
-                prefix="$"
-                placeholder="0"
-                label={copy.calc.revenueLabel}
-              />
-            </Question>
-
-            <Question prompt={copy.calc.q3} hint={copy.calc.q3hint}>
-              <NumberField
-                value={list}
-                onChange={setList}
-                max={MAX_LIST}
-                suffix={copy.calc.contacts}
-                placeholder="5,000"
-                label={copy.calc.listLabel}
-              />
-            </Question>
-          </div>
-
-          <Question prompt={copy.calc.q4}>
-            <div className="flex flex-wrap gap-1.5">
-              {streamIds.map((id) => (
-                <Choice
-                  key={id}
-                  selected={stream === id}
-                  onSelect={() => setStream(id)}
-                >
-                  {copy.calc.delivery[id]}
-                </Choice>
-              ))}
-            </div>
-          </Question>
-
-          <Question prompt={copy.calc.q5} hint={copy.calc.q5hint}>
-            <div className="flex flex-wrap gap-1.5">
-              {landingIds.map((id) => (
-                <Choice
-                  key={id}
-                  selected={landing === id}
-                  onSelect={() => setLanding(id)}
-                >
-                  {copy.calc.landing[id]}
-                </Choice>
-              ))}
-            </div>
-          </Question>
-
-          <Question prompt={copy.calc.q6} hint={copy.calc.q6hint}>
-            <div className="flex items-center gap-4">
-              <p className="w-[3.25rem] shrink-0 text-[1.35rem] font-semibold tracking-[-0.045em] tabular-nums">
-                {unanswered}%
-              </p>
-              <div className="min-w-0 flex-1">
-                <input
-                  type="range"
-                  min={MIN_UNANSWERED}
-                  max={MAX_UNANSWERED}
-                  step={5}
-                  value={unanswered}
-                  onChange={(event) => setUnanswered(Number(event.target.value))}
-                  aria-label={copy.calc.q6}
-                  aria-valuetext={`${unanswered}%`}
-                  className="range-slider"
-                  style={{
-                    background: `linear-gradient(to right, #050505 ${unansweredProgress}%, rgba(5,5,5,0.10) ${unansweredProgress}%)`,
-                  }}
-                />
-                <div className="mt-1.5 flex justify-between text-[11px] text-[#86868B]">
-                  <span>I get to it</span>
-                  <span>Most of it sits</span>
-                </div>
-              </div>
-            </div>
-          </Question>
-
-          <Question prompt={copy.calc.q7}>
-            <div className="flex flex-wrap gap-1.5">
-              {followupIds.map((id) => (
-                <Choice
-                  key={id}
-                  selected={followup === id}
-                  onSelect={() => setFollowup(id)}
-                >
-                  {copy.calc.followup[id]}
-                </Choice>
-              ))}
-            </div>
-          </Question>
-
-          {phase === "idle" && (
-            <button
-              type="button"
-              onClick={startCalculation}
-              className="group inline-flex h-11 w-full items-center justify-center gap-2 rounded-full bg-[#050505] px-7 text-[14px] font-medium text-white transition-all duration-500 ease-out hover:scale-[1.01] hover:shadow-xl sm:w-fit"
+      <div
+        className={`mx-auto flex w-full flex-1 flex-col px-4 py-10 sm:px-6 sm:py-14 ${
+          phase === "done" ? "max-w-6xl" : "max-w-2xl"
+        }`}
+      >
+        <AnimatePresence mode="wait">
+          {phase === "processing" ? (
+            <motion.div
+              key="processing"
+              className="flex flex-1 items-center justify-center"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.3 }}
             >
-              {copy.calc.cta}
-              <ArrowIcon className="size-4 transition-transform duration-500 ease-out group-hover:translate-x-1" />
-            </button>
-          )}
-          {phase === "processing" && (
-            <button
-              type="button"
-              disabled
-              className="inline-flex h-11 w-full items-center justify-center gap-2 rounded-full bg-[#050505] px-7 text-[14px] font-medium text-white opacity-50 sm:w-fit"
-            >
-              {copy.calc.analyzing}…
-            </button>
-          )}
-        </div>
-
-        <div className="relative min-h-[280px] overflow-hidden rounded-3xl border border-white/10 bg-[#050505] p-4 text-white sm:min-h-[300px] sm:p-6 lg:min-h-0">
-          <div
-            className="gpu pointer-events-none absolute -top-24 -right-16 h-64 w-64 rounded-full bg-[radial-gradient(circle,rgba(10,132,255,0.45),transparent_65%)] blur-2xl"
-            aria-hidden="true"
-          />
-
-          <AnimatePresence mode="wait">
-            {phase === "idle" ? (
-              <motion.div
-                key="locked"
-                className="relative flex h-full flex-col justify-center text-center"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0, scale: 0.98 }}
-                transition={{ duration: 0.4 }}
-              >
-                <p className="text-[13px] tracking-[0.14em] text-white/35 uppercase">
-                  {copy.calc.lockedLabel}
-                </p>
-                <p className="mt-4 text-4xl font-semibold tracking-[-0.05em] text-white/12 blur-[6px] select-none">
-                  $000,000
-                </p>
-                <p className="mx-auto mt-4 max-w-xs text-[13px] leading-5 text-white/45">
-                  {copy.calc.lockedBody}
-                </p>
-              </motion.div>
-            ) : phase === "processing" ? (
               <ProcessingPanel
-                key="processing"
                 analyzing={copy.calc.analyzing}
                 title={copy.calc.processingTitle}
                 body={copy.calc.processingBody}
                 steps={copy.calc.steps}
                 onDone={finishProcessing}
               />
-            ) : (
-              <motion.div
-                key="result"
-                className="relative flex h-full flex-col"
-                initial={{ opacity: 0, y: 16 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-              >
-                <p className="text-[11px] tracking-[0.14em] text-white/40 uppercase">
-                  {copy.calc.leakLabel}
-                </p>
-                <p className="mt-2 text-[2rem] font-semibold tracking-[-0.05em] tabular-nums sm:text-[2.35rem]">
-                  <AnimatedNumber
-                    value={result.total}
-                    format={(n) => money.format(Math.round(n))}
-                  />
-                </p>
-                <p className="mt-1 text-[13px] text-white/45">
-                  <AnimatedNumber
-                    value={result.annual}
-                    format={(n) => money.format(Math.round(n))}
-                  />{" "}
-                  {copy.calc.aYear}
-                </p>
-
-                <p className="mt-4 text-[13px] leading-5 text-white/70">
-                  {copy.calc.verdict[stream]}{" "}
-                  <span className="text-[#5AC8FA] tabular-nums">
-                    {numbers.format(list)}
-                  </span>{" "}
-                  {copy.calc.canReach}{" "}
-                  <span className="tabular-nums">
-                    {numbers.format(followers)}
-                  </span>
-                  .
-                </p>
-
-                <div className="mt-5 grid gap-3">
-                  <div>
-                    <div className="flex items-baseline justify-between gap-3 text-[12px]">
-                      <span className="text-white/45">{copy.calc.today}</span>
-                      <span className="font-medium tabular-nums">
-                        <AnimatedNumber
-                          value={revenue}
-                          format={(n) => money.format(Math.round(n))}
-                        />
-                      </span>
-                    </div>
-                    <div className="mt-1.5 h-1.5 w-full overflow-hidden rounded-full bg-white/10">
-                      <motion.div
-                        className="h-full rounded-full bg-white/35"
-                        animate={{
-                          width: `${Math.max((revenue / result.scale) * 100, 1.5)}%`,
-                        }}
-                        transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
-                      />
-                    </div>
-                  </div>
-
-                  <div>
-                    <div className="flex items-baseline justify-between gap-3 text-[12px]">
-                      <span className="text-white/45">
-                        {copy.calc.uncapturedBar}
-                      </span>
-                      <span className="font-medium tabular-nums">
-                        <AnimatedNumber
-                          value={result.total}
-                          format={(n) => money.format(Math.round(n))}
-                        />
-                      </span>
-                    </div>
-                    <div className="mt-1.5 h-1.5 w-full overflow-hidden rounded-full bg-white/10">
-                      <motion.div
-                        className="h-full rounded-full bg-gradient-to-r from-[#0A84FF] to-[#5AC8FA]"
-                        initial={{ width: 0 }}
-                        animate={{
-                          width: `${Math.max((result.total / result.scale) * 100, 1.5)}%`,
-                        }}
-                        transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                <div className="mt-5 border-t border-white/10 pt-1">
-                  {(
-                    [
-                      [copy.calc.leakFront, result.front],
-                      [copy.calc.leakOps, result.ops],
-                      [copy.calc.leakRetention, result.retention],
-                    ] as const
-                  ).map(([label, amount]) => (
-                    <div
-                      key={label}
-                      className="grid grid-cols-[minmax(0,1fr)_7.25rem] items-baseline gap-4 border-b border-white/[0.08] py-2 last:border-b-0"
-                    >
-                      <span className="text-[13px] leading-5 text-white/45">
-                        {label}
-                      </span>
-                      <span className="text-right text-[13px] font-medium leading-5 text-white/80 tabular-nums">
-                        <AnimatedNumber
-                          value={amount}
-                          format={(n) => money.format(Math.round(n))}
-                        />
-                      </span>
-                    </div>
-                  ))}
-                </div>
-
-                <Link
-                  href="/book"
-                  className="group relative z-10 mt-6 inline-flex h-11 w-full shrink-0 items-center justify-center gap-2 rounded-full bg-white px-6 text-[14px] font-medium text-[#050505] transition-all duration-500 ease-out hover:scale-[1.01] hover:shadow-xl"
+            </motion.div>
+          ) : phase === "done" && stream ? (
+            <motion.div
+              key="result"
+              className="flex flex-1 items-start justify-center py-4 sm:py-6"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.3 }}
+            >
+              <ResultScreen
+                copy={copy.calc}
+                result={result}
+                revenue={revenue}
+                stream={stream}
+                list={list ?? 0}
+                followers={followers}
+                platformLabel={
+                  platform ? copy.calc.platform[platform] : "inbound"
+                }
+                offerLabel={copy.calc.delivery[stream]}
+                landingLabel={
+                  landing ? copy.calc.landing[landing] : copy.calc.landing.feed
+                }
+                automation={automation}
+                landing={landing}
+                money={money}
+                numbers={numbers}
+              />
+            </motion.div>
+          ) : (
+            <motion.div
+              key="questions"
+              className="flex min-h-[320px] flex-1 flex-col sm:min-h-[380px]"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.3 }}
+            >
+              <div className="flex flex-1 items-center justify-center overflow-hidden">
+                <AnimatePresence mode="wait" custom={direction}>
+                  <motion.div
+                    key={`step-${step}`}
+                    ref={stepRootRef}
+                    tabIndex={-1}
+                    custom={direction}
+                    initial={{ opacity: 0, x: direction * slideOffset }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: direction * -slideOffset }}
+                    transition={{ duration: reduced ? 0.15 : 0.4, ease: EASE }}
+                    className="w-full outline-none"
+                  >
+                    {questions[step]}
+                  </motion.div>
+                </AnimatePresence>
+              </div>
+              <div className="mt-10 grid grid-cols-[4.75rem_minmax(0,1fr)_4.75rem] items-center">
+                <button
+                  type="button"
+                  onClick={goBack}
+                  disabled={step === 0}
+                  className="justify-self-start text-[13px] text-[var(--muted)] transition-colors duration-300 hover:text-[var(--fg)] disabled:pointer-events-none disabled:opacity-0"
                 >
-                  {copy.calc.resultCta}
-                  <ArrowIcon className="size-4 text-[#050505] transition-transform duration-500 ease-out group-hover:translate-x-1" />
-                </Link>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </div>
+                  {copy.calc.back}
+                </button>
+                <div className="flex flex-col items-center">
+                  <button
+                    type="button"
+                    onClick={goNext}
+                    className={`group inline-flex h-12 items-center justify-center gap-2 rounded-full bg-[#050505] px-7 text-[15px] font-medium text-white transition-all duration-500 ease-out hover:scale-[1.02] hover:shadow-xl ${
+                      questionReady ? "" : "opacity-40 hover:scale-100 hover:shadow-none"
+                    }`}
+                  >
+                    {lastQuestion ? copy.calc.cta : copy.calc.next}
+                    <ArrowIcon className="size-4 shrink-0 transition-transform duration-500 ease-out group-hover:translate-x-1" />
+                  </button>
+                  {attempted && !questionReady ? (
+                    <p className="mt-3 text-[13px] text-[#86868B]">{needCopy}</p>
+                  ) : null}
+                </div>
+                <span aria-hidden="true" />
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </div>
   );

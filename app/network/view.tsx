@@ -66,7 +66,7 @@ export function NetworkView() {
           <Stagger className="mt-14" step={0.08}>
             {copy.network.steps.map((step, index) => (
               <StaggerItem key={step.title}>
-                <article className="grid gap-2 border-t border-black/[0.06] py-8 sm:grid-cols-[4.5rem_1fr] sm:gap-10">
+                <article className="grid gap-2 py-8 sm:grid-cols-[4.5rem_1fr] sm:gap-10">
                   <span className="text-[11px] tracking-[0.16em] text-[#86868B] tabular-nums">
                     {String(index + 1).padStart(2, "0")}
                   </span>
@@ -128,14 +128,14 @@ export function NetworkView() {
           <Stagger className="grid gap-4 lg:grid-cols-2" step={0.1}>
             <StaggerItem>
               <article className={`${glassCard} p-8 sm:p-10`}>
-                <p className="text-[11px] tracking-[0.14em] text-[#86868B] uppercase">
+                <p className="text-[13px] tracking-[-0.01em] text-[#86868B]">
                   {copy.network.forYou}
                 </p>
                 <ul className="mt-8 space-y-4">
                   {copy.network.forYouItems.map((item) => (
                     <li
                       key={item}
-                      className="border-t border-black/[0.06] pt-4 text-[15px] leading-7 text-[#050505] first:border-t-0 first:pt-0"
+                      className="text-[15px] leading-7 text-[#050505]"
                     >
                       {item}
                     </li>
@@ -145,14 +145,14 @@ export function NetworkView() {
             </StaggerItem>
             <StaggerItem>
               <article className={`${glassCard} p-8 sm:p-10`}>
-                <p className="text-[11px] tracking-[0.14em] text-[#86868B] uppercase">
+                <p className="text-[13px] tracking-[-0.01em] text-[#86868B]">
                   {copy.network.notForYou}
                 </p>
                 <ul className="mt-8 space-y-4">
                   {copy.network.notForYouItems.map((item) => (
                     <li
                       key={item}
-                      className="border-t border-black/[0.06] pt-4 text-[15px] leading-7 text-[#86868B] first:border-t-0 first:pt-0"
+                      className="text-[15px] leading-7 text-[#86868B]"
                     >
                       {item}
                     </li>

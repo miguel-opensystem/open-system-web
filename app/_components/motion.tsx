@@ -104,36 +104,37 @@ export function Counter({
   decimals = 0,
   prefix = "",
   suffix = "",
+  delay = 0,
   className,
 }: {
   value: number;
   decimals?: number;
   prefix?: string;
   suffix?: string;
+  delay?: number;
   className?: string;
 }) {
   const ref = useRef<HTMLSpanElement>(null);
-  const inView = useInView(ref, { once: true, margin: "-60px" });
+  const inView = useInView(ref, VIEWPORT);
   const [display, setDisplay] = useState(0);
 
   useEffect(() => {
     if (!inView) return;
     const controls = animate(0, value, {
-      duration: 1.6,
+      duration: 2.1,
+      delay,
       ease: EASE,
       onUpdate: (latest) => setDisplay(latest),
     });
     return () => controls.stop();
-  }, [inView, value]);
+  }, [inView, value, delay]);
 
   return (
     <span ref={ref} className={className}>
-      {prefix}
-      {display.toLocaleString("en-US", {
+      {`${prefix}${display.toLocaleString("en-US", {
         minimumFractionDigits: decimals,
         maximumFractionDigits: decimals,
-      })}
-      {suffix}
+      })}${suffix}`}
     </span>
   );
 }

@@ -40,7 +40,6 @@ export function SiteFooter({
       links: [
         { label: copy.footer.about, href: "/about" },
         { label: copy.footer.faq, href: "/faq" },
-        { label: copy.footer.careers, href: "/network" },
         { label: copy.footer.contact, href: "/contact" },
       ],
     },

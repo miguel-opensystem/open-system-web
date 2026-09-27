@@ -10,8 +10,6 @@ export const en = {
     about: "About",
     book: "Book",
     bookCta: "Book Strategy Call",
-    apply: "Apply",
-    applyCta: "Submit proof of work",
     language: "Language",
   },
   footer: {
@@ -22,7 +20,6 @@ export const en = {
     company: "Company",
     about: "About",
     faq: "FAQ",
-    careers: "Operators",
     contact: "Initiate",
     monetization: "Monetization Architecture",
     intelligence: "Audience Intelligence",
@@ -45,10 +42,6 @@ export const en = {
       {
         title: "See what the audience is worth",
         href: "/calculator",
-      },
-      {
-        title: "Work with us as an operator",
-        href: "/network",
       },
       {
         title: "A question first",
@@ -860,14 +853,9 @@ export const en = {
         answer:
           "No. We do not produce campaigns or creative assets. We install and operate the revenue infrastructure.",
       },
-      {
-        question: "How do I join the operator network?",
-        answer:
-          "We do not hire employees. We work with experienced operators. Submit examples of systems you have already built.",
-      },
     ],
     wrongDoor: "Looking for something else?",
-    wrongBody: "Creators book a strategy call. Operators submit proof of work.",
+    wrongBody: "Creators book a strategy call.",
     bookCta: "Book Strategy Call",
   },
   contact: {
@@ -881,71 +869,7 @@ export const en = {
         cta: "Book Strategy Call",
         href: "/book",
       },
-      {
-        title: "Operators",
-        body: "We do not hire employees. We work with operators who can show completed systems. Proof of work comes first.",
-        cta: "Submit proof of work",
-        href: "/network",
-      },
     ],
-  },
-  network: {
-    label: "Operators",
-    title: "This is not a hiring page.",
-    titleAccent: "We work with independent operators.",
-    body: "We partner with operators across automation, client architecture, and backend systems. If you can show systems you have already built, submit your proof of work.",
-    apply: "Submit proof of work",
-    seeServices: "See the services",
-    how: "How you enter",
-    howTitle: "Start with work you have already shipped.",
-    howAccent: "",
-    howBody:
-      "There is no job description and no salary track. You submit systems you have built. If the work holds, we place you on live creator businesses.",
-    steps: [
-      {
-        title: "Proof of work",
-        body: "Show a system you have already built. We do not review resumes or pitch decks in place of that.",
-      },
-      {
-        title: "Review",
-        body: "If the work meets the standard, you join the operator network. Automation, architecture, or backend — on live installs for our clients.",
-      },
-      {
-        title: "How you work",
-        body: "You operate behind the scenes. The creator remains the public brand. The infrastructure is built to last.",
-      },
-    ],
-    leave: "The work",
-    leaveTitle: "Three roles",
-    leaveAccent: "in the network.",
-    offers: [
-      {
-        title: "Automation",
-        body: "Agents that qualify leads, follow up, and recover failed payments. Inbox work is handled as a system.",
-      },
-      {
-        title: "Client architecture",
-        body: "Intake, checkout, and community setup, assembled to fit the creator's business model.",
-      },
-      {
-        title: "Backend systems",
-        body: "CRM, billing, and retention. One member record. No spreadsheet exports.",
-      },
-    ],
-    forYou: "This is for you if",
-    forYouItems: [
-      "You already ship working systems, not slide decks",
-      "You want project-based partnership, not a staff job",
-      "You can prove your skill in the work itself",
-    ],
-    notForYou: "This is not for you if",
-    notForYouItems: [
-      "You want a salary and a title",
-      "You are looking for a marketing course",
-      "You have never built the thing you describe",
-    ],
-    seats: "A small, specialized operator network.",
-    seatsBody: "Proof of work comes first. If the work is real, we partner.",
   },
 };
 

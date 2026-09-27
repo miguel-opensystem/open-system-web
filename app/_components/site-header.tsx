@@ -218,11 +218,7 @@ export function SiteHeader({
             href={bookingUrl}
             className="group inline-flex min-h-10 shrink-0 touch-manipulation items-center gap-1.5 rounded-full bg-[var(--btn)] px-3.5 py-2 text-[13px] font-medium text-[var(--btn-fg)] transition-all duration-500 ease-out sm:px-4 [@media(hover:hover)]:hover:scale-[1.03] [@media(hover:hover)]:hover:shadow-lg"
           >
-            <span className="sm:hidden">
-              {resolvedCta === copy.nav.applyCta
-                ? copy.nav.apply
-                : copy.nav.book}
-            </span>
+            <span className="sm:hidden">{copy.nav.book}</span>
             <span className="hidden sm:inline">{resolvedCta}</span>
             <ArrowIcon className="size-3.5 transition-transform duration-500 ease-out group-hover:translate-x-0.5" />
           </Link>

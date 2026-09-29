@@ -125,6 +125,9 @@ export function HelpProvider({ children }: { children: ReactNode }) {
                   >
                     {copy.help.title}
                   </h2>
+                  <p className="mt-4 text-[15px] leading-6 text-[#86868B]">
+                    {copy.help.body}
+                  </p>
                 </div>
                 <button
                   ref={closeRef}
@@ -145,8 +148,13 @@ export function HelpProvider({ children }: { children: ReactNode }) {
                       onClick={close}
                       className="group flex items-center justify-between gap-4 py-5 transition-colors duration-300"
                     >
-                      <span className="text-[16px] font-semibold tracking-[-0.015em]">
-                        {path.title}
+                      <span className="min-w-0">
+                        <span className="block text-[16px] font-semibold tracking-[-0.015em]">
+                          {path.title}
+                        </span>
+                        <span className="mt-1 block text-[14px] leading-5 font-normal text-[#86868B]">
+                          {path.detail}
+                        </span>
                       </span>
                       <ArrowIcon className="size-4 shrink-0 text-[#86868B] transition-transform duration-500 ease-out group-hover:translate-x-1 group-hover:text-[#050505]" />
                     </Link>

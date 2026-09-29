@@ -21,10 +21,10 @@ export const en = {
     about: "About",
     faq: "FAQ",
     contact: "Initiate",
-    monetization: "Monetization Architecture",
-    intelligence: "Audience Intelligence",
-    operations: "Agentic Operations",
-    retention: "Retention Engineering",
+    monetization: "Offer & Checkout",
+    intelligence: "Followers Into Buyers",
+    operations: "DMs & Follow-Up",
+    retention: "Cancellations & Win-Backs",
     strategyCall: "Strategy Call",
     rights: "All rights reserved.",
     built: "Built for creators",
@@ -33,18 +33,22 @@ export const en = {
   help: {
     close: "Close",
     closeDialog: "Close dialog",
-    title: "Not sure where to start?",
+    title: "We run the backend of creator businesses.",
+    body: "You keep the audience and the content. We install the checkout, the follow-up, and the payment recovery, and we operate them.",
     paths: [
       {
-        title: "Install the infrastructure",
+        title: "Book a strategy call",
+        detail: "Thirty minutes. We look at your audience and say what we would run.",
         href: "/book",
       },
       {
-        title: "See what the audience is worth",
+        title: "Calculate missing revenue",
+        detail: "An estimate of the monthly revenue your audience is not paying you yet.",
         href: "/calculator",
       },
       {
-        title: "A question first",
+        title: "Read the FAQ",
+        detail: "How we work, who we work with, and what to expect.",
         href: "/faq",
       },
     ],
@@ -413,46 +417,47 @@ export const en = {
     ],
     servicesLabel: "Services",
     serviceKicker: "Service",
-    servicesTitle:
-      "The revenue infrastructure behind creator businesses.",
+    servicesTitle: "What we actually do.",
     servicesTitleAccent: "",
     servicesBody: "Four systems. You make content. We run the rest.",
     pillars: [
       {
-        title: "Audience Intelligence",
-        summary:
-          "Your audience is a comment section, not a database. We turn it into one.",
+        title: "Followers Into Buyers",
+        summary: "We turn followers into qualified calls on your calendar.",
         deliverables: [
-          "Buyer qualification",
-          "Intake and application",
-          "Checkout and payment plans",
+          "Qualifying leads",
+          "Application forms",
+          "Booked calls",
         ],
       },
       {
-        title: "Monetization Architecture",
-        summary:
-          "A Stripe link and a Skool page isn't a system. We build the one that runs itself.",
+        title: "Offer & Checkout",
+        summary: "We build the offer, and the checkout that sells it.",
         deliverables: [
-          "High-ticket offer design",
-          "Community deployment",
-          "Positioning and promise",
+          "Offer design",
+          "Community setup",
+          "Pricing and positioning",
         ],
       },
       {
-        title: "Agentic Operations",
+        title: "DMs & Follow-Up",
         summary:
-          "Every unanswered DM is money you already made. We make sure it gets collected.",
+          "Every DM you don't answer is a sale you already earned. We answer them.",
         deliverables: [
-          "Master CRM",
-          "Revenue automations",
+          "One customer record",
+          "Automatic follow-up",
           "Failed-payment recovery",
         ],
       },
       {
-        title: "Retention Engineering",
+        title: "Cancellations & Win-Backs",
         summary:
-          "Members don't cancel loudly — they go quiet. We catch it before you would.",
-        deliverables: ["Churn recovery", "Activation sequences", "Paid scale"],
+          "People don't cancel loudly — they go quiet. We spot it before they leave.",
+        deliverables: [
+          "Win-backs",
+          "New member onboarding",
+          "Paid ads once it's working",
+        ],
       },
     ],
     pillarNames: {
@@ -650,27 +655,27 @@ export const en = {
     partnerCardTitle: "We are responsible for the result, not just the software.",
     partnerP1: "We run the backend. You own the attention.",
     partnerP2:
-      "We don't sell you software to run. We run it for you. Every month, we handle the backend — the leads, the follow-up, the failed payments — and a person checks the work before you ever see it. You pay for the result. Not the access.",
-    partnerCta: "Audit Your Infrastructure",
+      "You keep making content. We handle everything behind it — answering leads, following up, and fixing failed payments — and a real person checks the work before it goes out. You don't log into anything. You just get the result.",
+    partnerCta: "See What You're Losing",
     partnerBento: [
       {
-        title: "Map the Leaks",
-        pain: "You rent attention. You don't capture it.",
-        body: "We find exactly where it's leaking — link-in-bio, DMs, calendar. You don't audit anything. We hand you the number, and what it's costing you.",
+        title: "Find the Leaks",
+        pain: "You're losing money you already earned.",
+        body: "We go through your link-in-bio, your DMs, and your booking flow and find where people drop off. You don't do anything. We tell you the exact amount you're losing each month.",
       },
       {
-        title: "Deploy the Engine",
-        pain: "You don't need a CRM. You need it handled.",
-        body: "We install the qualification, the follow-up, the checkout — then we run all of it. No dashboard to learn. No software to manage. Just the job, done.",
+        title: "Build the System",
+        pain: "We build it, then we run it.",
+        body: "We set up the follow-up messages, the booking, and the checkout — then we run all of it for you. No dashboard to learn, no software for you to manage.",
       },
       {
         title: "Run the Backend",
-        pain: "Software rots. Operators don't.",
-        body: "Cards expire, tools break, leads go cold. We catch it first — a system watching, a person checking — every day, for as long as you're growing.",
+        pain: "Someone checks it every day.",
+        body: "Cards expire, links break, and leads go cold. We catch those the same day they happen, instead of you finding out at the end of the month.",
       },
       {
         title: "Tied to your growth.",
-        body: "Pure operational alignment. We operate on performance baselines and revenue-share models. If our infrastructure does not scale your monthly recurring revenue, we do not expand the engagement.",
+        body: "We're paid on performance — a share of the revenue we bring in or recover. If your monthly recurring revenue doesn't grow, we don't expand the engagement.",
       },
     ],
     engagement: "Engagement model",
